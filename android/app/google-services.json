@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "112757987514",
+    "firebase_url": "https://bikeandcarservice-default-rtdb.firebaseio.com",
+    "project_id": "bikeandcarservice",
+    "storage_bucket": "bikeandcarservice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112757987514:android:6e0d067ab77a42a4280a83",
+        "android_client_info": {
+          "package_name": "com.example.bike_car_service"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112757987514-csrkvbnjfhkv8t5ehfsier8p398h48lq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bike_car_service",
+            "certificate_hash": "f8353894b8df3f7fdd2cf1f0d0ae88ea10ffc727"
+          }
+        },
+        {
+          "client_id": "112757987514-letgq6ck1i6d4h1sghthk9kr94e8cfhm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB32JcGjvofEHNx0QaTiWjFEusY1HA9IH4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "112757987514-letgq6ck1i6d4h1sghthk9kr94e8cfhm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
