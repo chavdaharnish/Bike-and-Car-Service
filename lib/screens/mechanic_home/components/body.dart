@@ -14,7 +14,15 @@ class Body extends StatelessWidget {
           children: [
             SizedBox(height: getProportionateScreenHeight(20)),
             HomeHeader(),
-            SizedBox(height: getProportionateScreenWidth(10)),
+            SizedBox(height: getProportionateScreenWidth(20)),
+             Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(20)),
+              child: SectionTitle(
+                title: "My Orders",
+                press: () {},
+              ),
+            ),
             Categories(),
             Padding(
               padding: EdgeInsets.symmetric(

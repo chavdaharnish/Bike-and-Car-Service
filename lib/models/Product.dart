@@ -7,6 +7,9 @@ class Product {
   final List<String> images;
   final double rating, price;
   final bool isFavourite, isPopular;
+  final String status;
+  final String email;
+  final String mobile;
 
   Product({
     @required this.id,
@@ -15,7 +18,10 @@ class Product {
     this.isFavourite = false,
     this.isPopular = false,
     @required this.title,
+    @required this.email,
+    @required this.mobile,
     this.price,
+    this.status,
     @required this.description,
   });
 }
@@ -32,6 +38,7 @@ Future<List<Product>> addMechanics() async {
     if (value.size > 0) {
       for (var shop_element in value.docs) {
         String description = " No Details Available";
+        //String status = 'Closed';
         // value.docs.forEach((element) {
         count++;
 
@@ -51,8 +58,11 @@ Future<List<Product>> addMechanics() async {
           ],
           title: shop_element.data()['shopname'],
           description: description,
+          email: shop_element.id,
+          mobile: shop_element.data()['mobile'],
           isFavourite: true,
           isPopular: true,
+          status: shop_element.data()['status'],
           price: 0,
         ));
       }

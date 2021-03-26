@@ -1,3 +1,4 @@
+import 'package:bike_car_service/screens/details/components/date_time_picker.dart';
 import 'package:bike_car_service/screens/home/components/list_mechanic.dart';
 import 'package:bike_car_service/screens/mechanic_forgot_password/forgot_password_screen.dart';
 import 'package:bike_car_service/screens/mechanic_home/components/add_staff_detail.dart';
@@ -45,4 +46,5 @@ final Map<String, WidgetBuilder> routes = {
   MechanicProfileScreen.routeName:(context)=>MechanicProfileScreen(),
   ListPage.routeName:(context)=>ListPage(),
   AddandRemoveStaff.routeName:(context)=>AddandRemoveStaff(),
+  DateTimePicker.routeName:(context)=>DateTimePicker(),
 };

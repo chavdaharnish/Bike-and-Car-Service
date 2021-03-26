@@ -117,7 +117,9 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       'lname': lastName,
       'mobile': mobile,
       'address': address,
-      'profilestatus': true
+      'profilestatus': true,
+      'status': 'Closed',
+
     }).then(
       (_) {
         addMechanicEmail(email);

@@ -1,26 +1,28 @@
 import 'dart:io';
 import 'dart:ui';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../size_config.dart';
 
-class ProfilePic extends StatefulWidget {
+class MechanicProfilePic extends StatefulWidget {
   @override
-  _ProfilePicState createState() => _ProfilePicState();
+  _MechanicProfilePicState createState() => _MechanicProfilePicState();
 }
 
-class _ProfilePicState extends State<ProfilePic> {
+class _MechanicProfilePicState extends State<MechanicProfilePic> {
   File image;
   File imagestorage;
   String imageUrl;
+  String email;
+
 
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
-  final auth = FirebaseAuth.instance.currentUser.email;
+  //final auth = FirebaseAuth.instance.currentUser.email;
 
   @protected
   void initState() {
@@ -29,9 +31,14 @@ class _ProfilePicState extends State<ProfilePic> {
   }
 
   downloadFileExample() async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    email = prefs.getString('memail');
+
+
     try {
       String downloadURL = await firebase_storage.FirebaseStorage.instance
-          .ref('Mechanic/$auth/profilepic/imageName')
+          .ref('Mechanic/$email/profilepic/imageName')
           .getDownloadURL();
 
       if (downloadURL != null) {
@@ -159,7 +166,7 @@ class _ProfilePicState extends State<ProfilePic> {
   removeFile() async {
     try {
       await firebase_storage.FirebaseStorage.instance
-          .ref('Mechanic/$auth/profilepic')
+          .ref('Mechanic/$email/profilepic')
           .child('imageName')
           .delete();
 
@@ -225,7 +232,7 @@ class _ProfilePicState extends State<ProfilePic> {
       //Upload to Firebase
       await storage
           .ref('Mechanic')
-          .child('/$auth/profilepic/imageName')
+          .child('/$email/profilepic/imageName')
           .putFile(file);
 
       downloadFileExample();
@@ -249,7 +256,7 @@ class _ProfilePicState extends State<ProfilePic> {
       //Upload to Firebase
       await storage
           .ref('Mechanic')
-          .child('/$auth/profilepic/imageName')
+          .child('/$email/profilepic/imageName')
           .putFile(file);
 
       setState(() {

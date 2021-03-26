@@ -10,12 +10,12 @@ class PopularProducts extends StatefulWidget {
 }
 
 class _PopularProductsState extends State<PopularProducts> {
- // var demoProducts;
+  // var demoProducts;
 
   @override
   void initState() {
     super.initState();
-  //  demoProducts = addInitMechanics();
+    //  demoProducts = addInitMechanics();
   }
 
   @override
@@ -29,7 +29,7 @@ class _PopularProductsState extends State<PopularProducts> {
     //   SizedBox(height: getProportionateScreenWidth(20)),
     return Row(children: <Widget>[
       Expanded(
-        child: SizedBox(
+          child: SizedBox(
         height: 350,
         child: FutureBuilder(
             future: addMechanics(),
@@ -41,20 +41,40 @@ class _PopularProductsState extends State<PopularProducts> {
                     child: Text("Loading..."),
                   );
                 } else {
+                  var noMechanic = true;
                   return ListView.separated(
                       scrollDirection: Axis.horizontal,
+                      
                       //padding: EdgeInsets.all(10),
                       itemBuilder: (context, index) {
+                       
                         if (snapshot.data.length > 0) {
-                          if (snapshot.data[index].isPopular)
+                          
+                          if (snapshot.data[index].status == 'Opened'){
+                            noMechanic = false;
                             return ProductCard(product: snapshot.data[index]);
+                          }
+                          else {
+                            //snapshot.data.length = 0;
+                            if(noMechanic && index == snapshot.data.length - 1){
+                              noMechanic= false;
+                            return Text.rich(
+                              TextSpan(
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20),
+                                  text:
+                                      'No Mechanics Available \nat Your Location'),
+                            );
+
+                            }
+                          }
                         } else {
                           return Text.rich(
                             TextSpan(
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 20),
                                 text:
-                                    'No Mechanics Available \nat Your Location'),
+                                    'No Mechanics Available \nat Your Location 2'),
                           );
                         }
                         return SizedBox.shrink();

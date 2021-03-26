@@ -50,13 +50,22 @@ class ProductDescription extends StatelessWidget {
           ),
         ),
         Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          child: Text('Email : '+
+            product.email + '\nMobile : ' + product.mobile,
+            style: Theme.of(context).textTheme.caption,
+          ),
+        ),
+        SizedBox(height:getProportionateScreenWidth(20)),
+        Padding(
           padding: EdgeInsets.only(
             left: getProportionateScreenWidth(20),
             right: getProportionateScreenWidth(64),
           ),
           child: Text(
             product.description,
-            maxLines: 3,
+            maxLines: 2,
           ),
         ),
         Padding(

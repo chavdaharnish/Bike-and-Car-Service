@@ -51,7 +51,7 @@ class _StaffInfoState extends State<StaffInfo> {
             children: data
                 .map(
                   (element) => SpecialOfferCard(
-                    shopname: element['shopName'],
+                    name: element['name'],
                     mobile: element['mobile'],
                     press: () {},
                   ),
@@ -64,20 +64,24 @@ class _StaffInfoState extends State<StaffInfo> {
   }
 
   Future addMechanics() async{
-    CollectionReference signIn =
-        FirebaseFirestore.instance.collection('Mechanic_Sign_In');
-    
+    var email;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String email = prefs.getString('memail');
-    
+    email = prefs.getString('memail');
 
-    return signIn.where('memail', isEqualTo: email).get().then((value) => {
+    CollectionReference signIn = FirebaseFirestore.instance
+        .collection('Mechanic_Sign_In')
+        .doc(email)
+        .collection('StaffInfo');
+
+    print('email........' + email);
+
+    return signIn.get().then((value) => {
           if (value.size > 0)
             {
               value.docs.forEach((element) {
                 setState(() {
                   data.add({
-                    'shopName': element.data()['shopname'],
+                    'name': element.data()['name'],
                     'mobile': element.data()['mobile']
                   });
                 });
@@ -85,10 +89,7 @@ class _StaffInfoState extends State<StaffInfo> {
             }
           else
             {
-              data.add({
-                'shopName': 'No Mechanics Found',
-                'mobile': 'on your location'
-              })
+              data.add({'name': 'No Staff Found', 'mobile': 'Add Now...'})
             }
         });
   }
@@ -97,12 +98,12 @@ class _StaffInfoState extends State<StaffInfo> {
 class SpecialOfferCard extends StatelessWidget {
   const SpecialOfferCard({
     Key key,
-    @required this.shopname,
+    @required this.name,
     @required this.mobile,
     @required this.press,
   }) : super(key: key);
 
-  final String shopname;
+  final String name;
   final String mobile;
   final GestureTapCallback press;
 
@@ -115,7 +116,7 @@ class SpecialOfferCard extends StatelessWidget {
         onTap: press,
         child: SizedBox(
           width: getProportionateScreenWidth(350),
-          height: getProportionateScreenWidth(120),
+          height: getProportionateScreenWidth(80),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Stack(
@@ -150,7 +151,7 @@ class SpecialOfferCard extends StatelessWidget {
                       style: TextStyle(color: Colors.white),
                       children: [
                         TextSpan(
-                          text: "$shopname\n",
+                          text: "$name\n",
                           style: TextStyle(
                             fontSize: getProportionateScreenWidth(20),
                             fontWeight: FontWeight.bold,

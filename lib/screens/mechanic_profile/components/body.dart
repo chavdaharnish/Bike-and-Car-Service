@@ -26,7 +26,7 @@ class Body extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
-          ProfilePic(),
+          MechanicProfilePic(),
           SizedBox(height: 20),
           ProfileMenu(
             text: "About My Store",
@@ -539,13 +539,14 @@ class _AboutMechanicsState extends State<AboutMechanics>
 
     return signIn.get().then((value) {
       value.docs.forEach((element) {
-        if (element.data()['description'] == null) {
-          description = 'Add About Your Store';
-          _textEditingController = new TextEditingController(text: description);
-        } else {
-          description = element.data()['description'];
-          _textEditingController = new TextEditingController(text: description);
-        }
+        if (element.data()['description'] != null) {
+          setState(() {
+            description = element.data()['description'];
+            _textEditingController =
+                new TextEditingController(text: description);
+          });
+          
+        } 
       });
     });
 

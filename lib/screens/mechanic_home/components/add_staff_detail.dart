@@ -1,3 +1,4 @@
+import 'package:bike_car_service/screens/mechanic_home/home_screen.dart';
 import 'package:bike_car_service/size_config.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -167,7 +168,7 @@ class _AddandRemoveStaffState extends State<AddandRemoveStaff> {
     ).then((value) => Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => AddandRemoveStaff(),
+          builder: (context) => MechanicHomeScreen(),
         ),
         ModalRoute.withName("/mechanichome")));
   }
@@ -213,7 +214,7 @@ class _ListOfStaffState extends State<ListOfStaff> {
                       mobile: element['mobile'],
                       press: () async {
                         String url = "tel:" + element['mobile'];
-                        print('urllllllllll..........'+element['mobile']);
+                        //print('urllllllllll..........'+element['mobile']);
                         if (await canLaunch(url)) {
                           await launch(url);
                         } else {

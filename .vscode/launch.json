@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Bike-and-Car-Service",
+            "name": "bike_and_car_service",
             "request": "launch",
             "type": "dart"
         }

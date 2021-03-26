@@ -39,7 +39,7 @@ class _BodyState extends State<Body> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool boolValue = prefs.getBool('option');
 
-    if (boolValue) {
+    if (boolValue!=null && boolValue) {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(

@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../size_config.dart';
 import 'icon_btn_with_counter.dart';
-import 'search_field.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({
@@ -17,7 +17,7 @@ class HomeHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SearchField(),
+          ShopStatus(),
           IconBtnWithCounter(
             svgSrc: "assets/icons/Star Icon.svg",
             numOfitem: 4,
@@ -32,4 +32,130 @@ class HomeHeader extends StatelessWidget {
       ),
     );
   }
+}
+
+class ShopStatus extends StatefulWidget {
+  @override
+  _ShopStatusState createState() => _ShopStatusState();
+}
+
+class _ShopStatusState extends State<ShopStatus> {
+  String status;
+  var brown = Colors.brown;
+  var green = Colors.green;
+  var red = Colors.red;
+  var color;
+
+  @override
+  void initState() {
+    super.initState();
+    _getStatus();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(color),
+      ),
+      child: Container(
+          width: SizeConfig.screenWidth * 0.5,
+          height: SizeConfig.screenWidth * 0.1,
+          color: Colors.white,
+          // decoration: BoxDecoration(
+          //   color: kSecondaryColor.withOpacity(0.1),
+          //   borderRadius: BorderRadius.circular(15),
+          // ),
+          child: Row(children: [
+            Icon(
+              Icons.arrow_right_sharp,
+              color: brown,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Shop Status : $status',
+                style: TextStyle(color: Colors.brown),
+              ),
+            ),
+          ])),
+      onPressed: () {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return new AlertDialog(
+                content: Container(
+                  padding: EdgeInsets.all(0),
+                  child: Text('Current Status Is : $status\n\nWant to change?'),
+                ),
+                actions: <Widget>[
+                  // ignore: deprecated_member_use
+                  new FlatButton(
+                      child: const Text('NO'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                  // ignore: deprecated_member_use
+                  new FlatButton(
+                      child: const Text('YES'),
+                      onPressed: () {
+                        setState(() {
+                          if (status == 'Opened') {
+                            status = 'Closed';
+                            color = red;
+                            _setStatus(status);
+                            Navigator.pop(context);
+                          } else {
+                            status = 'Opened';
+                            color = green;
+                            _setStatus(status);
+                            Navigator.pop(context);
+                          }
+                        });
+                         
+                      })
+                ],
+              );
+            });
+      },
+      onLongPress: () {},
+    );
+  }
+
+  _getStatus() async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String email = prefs.getString('memail');
+    CollectionReference signIn = FirebaseFirestore.instance
+        .collection('Mechanic_Sign_In');
+    
+    return signIn.where('email', isEqualTo: email).get().then((value){
+        value.docs.forEach((element) {
+          setState(() {
+            status = element.data()['status'];
+            if(status == 'Opened'){
+              color = green;
+            }else{
+              color = red;
+            }
+          });
+        });
+    });
+
+  }
+
+  _setStatus(String stat) async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String email = prefs.getString('memail');
+    CollectionReference signIn = FirebaseFirestore.instance
+        .collection('Mechanic_Sign_In');
+    
+    return signIn.doc(email).update({'status': stat}).then((value){
+        
+    });
+
+  }
+  
+
 }
