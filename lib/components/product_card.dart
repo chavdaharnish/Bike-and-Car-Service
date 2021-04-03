@@ -6,6 +6,7 @@ import '../constants.dart';
 import '../size_config.dart';
 
 class ProductCard extends StatelessWidget {
+  //test commit comment
   const ProductCard({
     Key key,
     this.width = 200,
