@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/Product.dart';
 import 'components/body.dart';
 import 'components/custom_app_bar.dart';
+import 'components/book_mechanic.dart';
 
 class DetailsScreen extends StatelessWidget {
   static String routeName = "/details";
@@ -26,9 +27,17 @@ class DetailsScreen extends StatelessWidget {
           icon: Icon(Icons.build_circle),
           backgroundColor: kPrimaryColor,
           onPressed: () {
-            if (agrs.schedule.date != null) {
-              _setBookingSchedule(agrs, context);
-            }
+            Navigator.pushNamed(context, BookMechanic.routeName, arguments: ProductDetailsArguments(
+                          product: agrs.product, 
+                          //schedule: agrs.schedule
+                          ), );
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(builder: (context) => BookMechanic(), ));
+            // if (agrs.schedule !=null && agrs.schedule.date != null) {
+              
+            //   _setBookingSchedule(agrs, context);
+            // }
           },
         ),
       ),

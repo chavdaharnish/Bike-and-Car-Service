@@ -32,104 +32,106 @@ class Body extends StatelessWidget {
                   product: product,
                   pressOnSeeMore: () {},
                 ),
-                TopRoundedContainer(
-                  color: Color(0xFFF6F7F9),
-                  child: Column(
-                    children: [
-                      //ColorDots(product: product),
-                      Row(
-                        children: [
-                          Padding(padding: EdgeInsets.all(10)),
-                          InkWell(
-                              child: Text(
-                                'Pick Date and Time for Booking',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: kPrimaryColor),
-                              ),
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  DateTimePicker.routeName,
-                                  arguments:
-                                      ProductDetailsArguments(product: product),
-                                );
-                              }),
-                          SizedBox(width: getProportionateScreenWidth(10)),
-                          Icon(Icons.arrow_right),
-                          SizedBox(width: getProportionateScreenWidth(60)),
-                          Container(
-                            height: getProportionateScreenWidth(40),
-                            width: getProportionateScreenWidth(40),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  offset: Offset(0, 6),
-                                  blurRadius: 10,
-                                  color: Color(0xFFB0B0B0).withOpacity(0.2),
-                                ),
-                              ],
-                            ),
-                            child: FlatButton(
-                              padding: EdgeInsets.zero,
-                              color: kPrimaryColor,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50)),
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, DateTimePicker.routeName,
-                                    arguments: ProductDetailsArguments(
-                                        product: product));
-                              },
-                              child: Icon(
-                                Icons.schedule,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          // IconButton(
-                          //     color: kPrimaryColor,
-                          //     icon: Icon(Icons.schedule),
-                          //     onPressed: () {}),
-                          // RoundedIconBtn(
-                          //     showShadow: true,
-                          //     icon: Icons.schedule,
-                          //     press: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => DateTimePicker()),
-                          // );
-                          //     }),
-                        ],
-                      ),
-                      TopRoundedContainer(
-                        color: Color(0xFFF6F7F9),
-                        child: Padding(
-                            padding: EdgeInsets.only(
-                              left: SizeConfig.screenWidth * 0.05,
-                              right: SizeConfig.screenWidth * 0.05,
-                              // bottom: getProportionateScreenWidth(),
-                            ),
-                            child: schedule != null
-                                ? Text('Date :' +
-                                    schedule.date +
-                                    '\nTime : ' +
-                                    schedule.startTime +
-                                    ' - ' +
-                                    schedule.endTime, style: TextStyle(color: Colors.purple))
-                                : Text('Selected Date and Time will be Shown Here',style: TextStyle(color: Colors.purple))
-                            // DefaultButton(
-                            //   text: "Book Mechanic",
-                            //   press: () {},
-                            // ),
-                            ),
-                      ),
-                      SizedBox(height : 100)
-                    ],
-                  ),
-                ),
+
+                SizedBox(height: 200,)
+                // TopRoundedContainer(
+                //   color: Color(0xFFF6F7F9),
+                //   child: Column(
+                //     children: [
+                //       //ColorDots(product: product),
+                //       Row(
+                //         children: [
+                //           Padding(padding: EdgeInsets.all(10)),
+                //           InkWell(
+                //               child: Text(
+                //                 'Pick Date and Time for Booking',
+                //                 style: TextStyle(
+                //                     fontWeight: FontWeight.w600,
+                //                     color: kPrimaryColor),
+                //               ),
+                //               onTap: () {
+                //                 Navigator.pushNamed(
+                //                   context,
+                //                   DateTimePicker.routeName,
+                //                   arguments:
+                //                       ProductDetailsArguments(product: product),
+                //                 );
+                //               }),
+                //           SizedBox(width: getProportionateScreenWidth(10)),
+                //           Icon(Icons.arrow_right),
+                //           SizedBox(width: getProportionateScreenWidth(60)),
+                //           Container(
+                //             height: getProportionateScreenWidth(40),
+                //             width: getProportionateScreenWidth(40),
+                //             decoration: BoxDecoration(
+                //               shape: BoxShape.circle,
+                //               boxShadow: [
+                //                 BoxShadow(
+                //                   offset: Offset(0, 6),
+                //                   blurRadius: 10,
+                //                   color: Color(0xFFB0B0B0).withOpacity(0.2),
+                //                 ),
+                //               ],
+                //             ),
+                //             child: FlatButton(
+                //               padding: EdgeInsets.zero,
+                //               color: kPrimaryColor,
+                //               shape: RoundedRectangleBorder(
+                //                   borderRadius: BorderRadius.circular(50)),
+                //               onPressed: () {
+                //                 Navigator.pushNamed(
+                //                     context, DateTimePicker.routeName,
+                //                     arguments: ProductDetailsArguments(
+                //                         product: product));
+                //               },
+                //               child: Icon(
+                //                 Icons.schedule,
+                //                 color: Colors.white,
+                //               ),
+                //             ),
+                //           ),
+                //           // IconButton(
+                //           //     color: kPrimaryColor,
+                //           //     icon: Icon(Icons.schedule),
+                //           //     onPressed: () {}),
+                //           // RoundedIconBtn(
+                //           //     showShadow: true,
+                //           //     icon: Icons.schedule,
+                //           //     press: () {
+                //           // Navigator.push(
+                //           //   context,
+                //           //   MaterialPageRoute(
+                //           //       builder: (context) => DateTimePicker()),
+                //           // );
+                //           //     }),
+                //         ],
+                //       ),
+                //       // TopRoundedContainer(
+                //       //   color: Color(0xFFF6F7F9),
+                //       //   child: Padding(
+                //       //       padding: EdgeInsets.only(
+                //       //         left: SizeConfig.screenWidth * 0.05,
+                //       //         right: SizeConfig.screenWidth * 0.05,
+                //       //         // bottom: getProportionateScreenWidth(),
+                //       //       ),
+                //       //       child: schedule != null
+                //       //           ? Text('Date :' +
+                //       //               schedule.date +
+                //       //               '\nTime : ' +
+                //       //               schedule.startTime +
+                //       //               ' - ' +
+                //       //               schedule.endTime, style: TextStyle(color: Colors.purple))
+                //       //           : Text('Selected Date and Time will be Shown Here',style: TextStyle(color: Colors.purple))
+                //       //       // DefaultButton(
+                //       //       //   text: "Book Mechanic",
+                //       //       //   press: () {},
+                //       //       // ),
+                //       //       ),
+                //       // ),
+                //       SizedBox(height : 100)
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),

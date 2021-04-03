@@ -40,10 +40,14 @@ class _CategoriesState extends State<Categories> {
             press: () {
               if (index == 2) {
                 //print('object');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RequestList()),
-                );
+                Navigator.pushNamed(context,OperationList.routeName,
+                    arguments: {'operation' : '2'});
+              }else if(index == 1){
+                Navigator.pushNamed(context,OperationList.routeName,
+                    arguments: {'operation' : '1'});
+              }else if(index == 0){
+                Navigator.pushNamed(context,OperationList.routeName,
+                    arguments: {'operation' : '0'});
               }
             },
           ),

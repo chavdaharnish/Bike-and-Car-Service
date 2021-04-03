@@ -49,6 +49,7 @@ dependencies:
   flutter_calendar_carousel: ^1.5.2
   date_format: ^2.0.2
   mailer: 
+  flutter_easyloading: ^3.0.0
 
 dev_dependencies:
   flutter_test:

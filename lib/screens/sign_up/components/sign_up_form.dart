@@ -1,7 +1,6 @@
 import 'package:bike_car_service/helper/keyboard.dart';
 import 'package:bike_car_service/helper/utils.dart';
 import 'package:bike_car_service/screens/complete_profile/complete_profile_screen.dart';
-import 'package:bike_car_service/user_detail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bike_car_service/components/custom_surfix_icon.dart';
@@ -114,41 +113,7 @@ class _SignUpFormState extends State<SignUpForm> {
     super.dispose();
   }
 
-  // Future<void> _getCurrentPosition() async {
-  //   // verify permissions
-  //   LocationPermission permission = await Geolocator.requestPermission();
-  //   if (permission == LocationPermission.denied ||
-  //       permission == LocationPermission.deniedForever) {
-  //     await Geolocator.openAppSettings();
-  //     await Geolocator.openLocationSettings();
-  //   }
-  //   // get current position
-  //   _currentPosition = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.high);
-
-  //   // get address
-  //   String _currentAddress = await _getGeolocationAddress(_currentPosition);
-  //   print("Logitute and Latitude -> "+_currentAddress);
-  // }
-
-  // // Method to get Address from position:
-
-  // Future<String> _getGeolocationAddress(Position position) async {
-  //   // geocoding
-  //   var places = await placemarkFromCoordinates(
-  //     position.latitude,
-  //     position.longitude,
-  //   );
-  //   if (places != null && places.isNotEmpty) {
-  //     final Placemark place = places.first;
-  //     print("Place and City -> " + place.thoroughfare + place.locality);
-  //     location = place.locality;
-  //     addUser(email, password, location, context);
-  //     return "${place.thoroughfare}, ${place.locality}";
-  //   }
-
-  //   return "No address available";
-  // }
+  
 
   Future<void> addUser(String email,String password, String location, BuildContext context) {
 
@@ -293,3 +258,46 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 }
+
+
+
+
+
+
+
+
+// Future<void> _getCurrentPosition() async {
+  //   // verify permissions
+  //   LocationPermission permission = await Geolocator.requestPermission();
+  //   if (permission == LocationPermission.denied ||
+  //       permission == LocationPermission.deniedForever) {
+  //     await Geolocator.openAppSettings();
+  //     await Geolocator.openLocationSettings();
+  //   }
+  //   // get current position
+  //   _currentPosition = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high);
+
+  //   // get address
+  //   String _currentAddress = await _getGeolocationAddress(_currentPosition);
+  //   print("Logitute and Latitude -> "+_currentAddress);
+  // }
+
+  // // Method to get Address from position:
+
+  // Future<String> _getGeolocationAddress(Position position) async {
+  //   // geocoding
+  //   var places = await placemarkFromCoordinates(
+  //     position.latitude,
+  //     position.longitude,
+  //   );
+  //   if (places != null && places.isNotEmpty) {
+  //     final Placemark place = places.first;
+  //     print("Place and City -> " + place.thoroughfare + place.locality);
+  //     location = place.locality;
+  //     addUser(email, password, location, context);
+  //     return "${place.thoroughfare}, ${place.locality}";
+  //   }
+
+  //   return "No address available";
+  // }

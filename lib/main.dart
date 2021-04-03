@@ -5,12 +5,31 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:bike_car_service/routes.dart';
 import 'package:bike_car_service/theme.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
+  configLoading();
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
+  //..customAnimation = CustomAnimation();
 }
 
 class MyApp extends StatefulWidget {
@@ -19,9 +38,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
   String mechanicEmail;
   String customerEmail;
+
+  String mEmail;
+  String cEmail;
 
   @override
   void initState() {
@@ -35,10 +56,18 @@ class _MyAppState extends State<MyApp> {
     //Return String
     mechanicEmail = prefs.getString('memail');
     //return email;
-    if (mechanicEmail != '' && mechanicEmail != null) {
-      Navigator.pushNamed(context, MechanicHomeScreen.routeName);
-    }
+    if (mechanicEmail != null && mechanicEmail != '') {
 
+      setState(() {
+        mEmail = mechanicEmail;
+      });
+      
+
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => MechanicHomeScreen()),
+      // );
+    }
   }
 
   getEmail() async {
@@ -47,10 +76,16 @@ class _MyAppState extends State<MyApp> {
     customerEmail = prefs.getString('email');
     //return email;
 
-    if(customerEmail != '' && customerEmail != null){
-      Navigator.pushNamed(context, HomeScreen.routeName);
-    }
+    if (customerEmail != '' && customerEmail != null) {
 
+      setState(() {
+        cEmail = customerEmail;
+      });
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => HomeScreen()),
+      // );
+    }
   }
 
   @override
@@ -60,8 +95,14 @@ class _MyAppState extends State<MyApp> {
       title: 'Rapid Service',
       theme: theme(),
       // home: SplashScreen(),
-      initialRoute: SplashScreen.routeName,
+      initialRoute: cEmail != null
+          ? HomeScreen.routeName
+          : mEmail != null
+              ? MechanicHomeScreen.routeName
+              : SplashScreen.routeName,
       routes: routes,
+      builder: EasyLoading.init(),
+      
     );
   }
 }

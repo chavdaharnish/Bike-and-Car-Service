@@ -1,3 +1,4 @@
+import 'package:bike_car_service/screens/details/components/book_mechanic.dart';
 import 'package:bike_car_service/screens/details/components/date_time_picker.dart';
 import 'package:bike_car_service/screens/home/components/list_mechanic.dart';
 import 'package:bike_car_service/screens/mechanic_forgot_password/forgot_password_screen.dart';
@@ -20,6 +21,7 @@ import 'package:bike_car_service/screens/profile/components/my_account.dart';
 import 'package:bike_car_service/screens/sign_in/sign_in_screen.dart';
 import 'package:bike_car_service/screens/splash/splash_screen.dart';
 import 'package:bike_car_service/components/verify.dart';
+import 'screens/mechanic_home/components/request_list.dart';
 import 'screens/sign_up/sign_up_screen.dart';
 
 // We use name route
@@ -47,4 +49,6 @@ final Map<String, WidgetBuilder> routes = {
   ListPage.routeName:(context)=>ListPage(),
   AddandRemoveStaff.routeName:(context)=>AddandRemoveStaff(),
   DateTimePicker.routeName:(context)=>DateTimePicker(),
+  OperationList.routeName:(context)=>OperationList(),
+  BookMechanic.routeName:(context)=>BookMechanic(),
 };
