@@ -1,6 +1,5 @@
 import 'package:bike_car_service/components/mechanic_no_account.dart';
 import 'package:flutter/material.dart';
-import 'package:bike_car_service/components/socal_card.dart';
 import '../../../size_config.dart';
 import 'sign_form.dart';
 

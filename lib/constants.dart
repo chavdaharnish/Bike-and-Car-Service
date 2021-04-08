@@ -37,6 +37,9 @@ const String kMobileNullError = "Please Enter your Mobile No.";
 const String kMobileLengthNullError = "Check Mobile No. Length";
 const String kShopnameNullError = "Please Enter Shop Name";
 const String kShopnameLengthError = "Shop Name length must be greater than 5";
+const String serverKey =
+    'AAAAGkDmWLo:APA91bH-SSp8m70WnN34ZoOGIeqfqw79x9KEBZ7YBI17-IKokLnV0nDSFLIvwA_xOuY6e38xriuWowxIA9iFj6o4O8ZK7Km4Srompfh3quKnJU1YQ7ldNtDgGzqiUPPsqyHoKFeQp3kr';
+var finalToken = '';
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

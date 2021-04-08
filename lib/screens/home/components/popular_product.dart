@@ -1,6 +1,8 @@
+import 'package:bike_car_service/models/Location.dart';
 import 'package:flutter/material.dart';
 import 'package:bike_car_service/components/product_card.dart';
 import 'package:bike_car_service/models/Product.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../../../size_config.dart';
 
@@ -15,8 +17,14 @@ class _PopularProductsState extends State<PopularProducts> {
   @override
   void initState() {
     super.initState();
-    //  demoProducts = addInitMechanics();
+    if (object.finalLocation.isEmpty) {}
   }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   demoProducts.clear();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -37,35 +45,37 @@ class _PopularProductsState extends State<PopularProducts> {
             builder: (context, snapshot) {
               if (snapshot != null) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
+                  EasyLoading.show(status: 'loading...');
                   return Center(
-                    child: Text("Loading..."),
+                    child: Text("loading..."),
                   );
                 } else {
+                  EasyLoading.dismiss();
                   var noMechanic = true;
                   return ListView.separated(
                       scrollDirection: Axis.horizontal,
-                      
+
                       //padding: EdgeInsets.all(10),
                       itemBuilder: (context, index) {
-                       
                         if (snapshot.data.length > 0) {
-                          
-                          if (snapshot.data[index].status == 'Opened'){
+                          if (snapshot.data[index].status == 'Opened') {
                             noMechanic = false;
                             return ProductCard(product: snapshot.data[index]);
-                          }
-                          else {
+                          } else {
                             //snapshot.data.length = 0;
-                            if(noMechanic && index == snapshot.data.length - 1){
-                              noMechanic= false;
-                            return Text.rich(
-                              TextSpan(
+                            if (noMechanic &&
+                                index == snapshot.data.length - 1) {
+                              noMechanic = false;
+                              return Text.rich(
+                                TextSpan(
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 20),
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                  ),
                                   text:
-                                      'No Mechanics Available \nat Your Location'),
-                            );
-
+                                      'No Mechanics Available \nat Your Location',
+                                ),
+                              );
                             }
                           }
                         } else {

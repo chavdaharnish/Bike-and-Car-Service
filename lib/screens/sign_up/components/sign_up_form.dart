@@ -7,6 +7,7 @@ import 'package:bike_car_service/components/custom_surfix_icon.dart';
 import 'package:bike_car_service/components/default_button.dart';
 import 'package:bike_car_service/components/form_error.dart';
 import 'package:bike_car_service/constants.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:geocoding/geocoding.dart';
 // import 'package:geolocator/geolocator.dart';
@@ -81,6 +82,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 _formKey.currentState.save();
                 // if all are valid then go to success screen
                 //authentication();
+                EasyLoading.show(status: 'loading...');
                 auth.createUserWithEmailAndPassword(
                   email: email, 
                   password: password).then((_) {
@@ -140,6 +142,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   );
                   Navigator.pushNamed(context,CompleteProfileScreen.routeName,
                     arguments: {'location' : location , 'email': email , 'password': password , 'customer' : 'c'});
+                  EasyLoading.dismiss();
               },
           ).catchError((error){
                  Fluttertoast.showToast(
@@ -151,6 +154,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   textColor: Colors.white,
                   fontSize: 16.0
                   );
+                  EasyLoading.dismiss();
           });
     }
 

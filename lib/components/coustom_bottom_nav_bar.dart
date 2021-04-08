@@ -1,3 +1,4 @@
+import 'package:bike_car_service/screens/chat/chat_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:bike_car_service/screens/home/home_screen.dart';
@@ -39,41 +40,49 @@ class CustomBottomNavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
+                  icon: SvgPicture.asset(
+                    "assets/icons/Shop Icon.svg",
+                    color: MenuState.home == selectedMenu
+                        ? kPrimaryColor
+                        : inActiveIconColor,
+                  ),
+                  onPressed: () => {
+                        if (MenuState.home != selectedMenu)
+                          {
+                            Navigator.pushNamed(context, HomeScreen.routeName),
+                          }
+                      }),
+              // IconButton(
+              //   icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
+              //   onPressed: () {},
+              // ),
+              IconButton(
                 icon: SvgPicture.asset(
-                  "assets/icons/Shop Icon.svg",
-                  color: MenuState.home == selectedMenu
+                  "assets/icons/Chat bubble Icon.svg",
+                  color: MenuState.message == selectedMenu
                       ? kPrimaryColor
                       : inActiveIconColor,
                 ),
-                onPressed: () =>{
-                  if(MenuState.home != selectedMenu){
-                    Navigator.pushNamed(context, HomeScreen.routeName),
+                onPressed: () => {
+                  if (MenuState.message != selectedMenu) {
+                    Navigator.pushNamed(context, ChatHomeScreen.routeName)
                   }
-                }
-                    
+                },
               ),
               IconButton(
-                icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg"),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: SvgPicture.asset(
-                  "assets/icons/User Icon.svg",
-                  color: MenuState.profile == selectedMenu
-                      ? kPrimaryColor
-                      : inActiveIconColor,
-                ),
-                onPressed: () =>{
-                  if(MenuState.profile != selectedMenu){
-                    Navigator.pushNamed(context, ProfileScreen.routeName),
-                  }
-                }
-                    
-              ),
+                  icon: SvgPicture.asset(
+                    "assets/icons/User Icon.svg",
+                    color: MenuState.profile == selectedMenu
+                        ? kPrimaryColor
+                        : inActiveIconColor,
+                  ),
+                  onPressed: () => {
+                        if (MenuState.profile != selectedMenu)
+                          {
+                            Navigator.pushNamed(
+                                context, ProfileScreen.routeName),
+                          }
+                      }),
             ],
           )),
     );

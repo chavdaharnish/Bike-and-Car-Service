@@ -62,12 +62,14 @@ class _MechanicProfilePicState extends State<MechanicProfilePic> {
       width: 115,
       child: Stack(
         fit: StackFit.expand,
+        // ignore: deprecated_member_use
         overflow: Overflow.visible,
         children: [
           CircleAvatar(
             backgroundImage: imageUrl != null
                 ? NetworkImage(imageUrl)
                 : AssetImage("assets/images/Profile Image.png"),
+            // ignore: deprecated_member_use
             child: FlatButton(
               onPressed: () {
                 showDialog(
@@ -85,6 +87,7 @@ class _MechanicProfilePicState extends State<MechanicProfilePic> {
                                 width: 400,
                                 child: Stack(
                                   fit: StackFit.expand,
+                                  // ignore: deprecated_member_use
                                   overflow: Overflow.visible,
                                   children: [
                                     Image(
@@ -145,6 +148,7 @@ class _MechanicProfilePicState extends State<MechanicProfilePic> {
             child: SizedBox(
               height: 46,
               width: 46,
+              // ignore: deprecated_member_use
               child: FlatButton(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),

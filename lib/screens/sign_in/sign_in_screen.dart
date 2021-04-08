@@ -2,36 +2,35 @@ import 'package:bike_car_service/screens/home/home_screen.dart';
 import 'package:bike_car_service/screens/mechanic_home/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// import 'package:geocoding/geocoding.dart';
-// import 'package:geolocator/geolocator.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'components/body.dart';
 
 class SignInScreen extends StatefulWidget {
-   static String routeName = "/sign_in";
+  static String routeName = "/sign_in";
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  // Position _currentPosition;
-
-  // String location;
-
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    //_getCurrentPosition();
     _getEmail();
   }
 
-  _getEmail()async{
+  _getEmail() async {
+    await EasyLoading.show(
+      status: 'loading...',
+      maskType: EasyLoadingMaskType.black,
+      dismissOnTap: false,
+    );
     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //Return String
+    //Return String
     String email = prefs.getString('email');
-    if(email!=null && email.isNotEmpty){
-       Navigator.pushAndRemoveUntil(
+    if (email != null && email.isNotEmpty) {
+      await EasyLoading.dismiss();
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (BuildContext context) => HomeScreen(),
@@ -39,15 +38,18 @@ class _SignInScreenState extends State<SignInScreen> {
         (route) => false,
       );
     }
-   String memail = prefs.getString('memail');
-    if(memail!=null && memail.isNotEmpty){
-       Navigator.pushAndRemoveUntil(
+    String memail = prefs.getString('memail');
+    if (memail != null && memail.isNotEmpty) {
+      await EasyLoading.dismiss();
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (BuildContext context) => MechanicHomeScreen(),
         ),
         (route) => false,
       );
+    }else{
+      await EasyLoading.dismiss();
     }
   }
 
@@ -92,11 +94,11 @@ class _SignInScreenState extends State<SignInScreen> {
   Future<void> addLocation(String location) async {
     CollectionReference signIn =
         FirebaseFirestore.instance.collection('Customer_Sign_In');
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-  //Return String
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return String
     String email = prefs.getString('email');
 
-        return signIn.doc(email).update({'location': location});
+    return signIn.doc(email).update({'location': location});
   }
 
   @override

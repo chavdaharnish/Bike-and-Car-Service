@@ -1,9 +1,12 @@
-import 'package:bike_car_service/constants.dart';
+import 'package:bike_car_service/models/DeviceToken.dart';
 import 'package:bike_car_service/screens/mechanic_home/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:bike_car_service/helper/request_mail.dart';
+import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class OperationList extends StatefulWidget {
@@ -15,6 +18,8 @@ class OperationList extends StatefulWidget {
 class _OperationListState extends State<OperationList> {
   Future _data;
   String operation;
+
+  TextEditingController _reasonController = TextEditingController();
 
   Future getPosts() async {
     var firestore = FirebaseFirestore.instance;
@@ -289,14 +294,54 @@ class _OperationListState extends State<OperationList> {
         context: context,
         builder: (_) {
           return new AlertDialog(
+            //backgroundColor: Colors.black,
+            insetPadding: EdgeInsets.all(getProportionateScreenWidth(0)),
             content: Container(
-              padding: EdgeInsets.all(0),
-              child: operation == '2'
-                  ? Text('To $type Request Press Yes')
-                  : operation == '1'
-                      ? Text(
-                          'Press Yes if order is completed\n\nMake sure that customer paid all the bills.')
-                      : operation,
+              height: getProportionateScreenHeight(200),
+              child: SingleChildScrollView(
+                  child: Container(
+                      // height: getProportionateScreenHeight(300),
+                      padding: EdgeInsets.all(0),
+                      child: Column(
+                        children: [
+                          operation == '2'
+                              ? Text('To $type Request Press Yes\n\n' +
+                                  'Requester: '+ data.data()['customerEmail'])
+                              : operation == '1'
+                                  ? Text(
+                                      'Press Yes if order is completed\n\nMake sure that customer paid all the bills.')
+                                  : operation,
+                          SizedBox(
+                            height: getProportionateScreenHeight(50),
+                          ),
+                          type == 'Denied'
+                              ? TextField(
+                                  minLines: 1,
+                                  maxLength: 250,
+                                  maxLines: null,
+                                  decoration: InputDecoration(
+                                    hintText: 'Give Reason',
+                                    suffixIcon: Icon(
+                                      Icons.error,
+                                      color: kPrimaryColor,
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.blue),
+                                    ),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.purple),
+                                    ),
+                                  ),
+                                  controller: _reasonController,
+                                )
+                              : type == 'Accept'
+                                  ? Text(
+                                      'Mechanic must have to go at client Address')
+                                  : type,
+                        ],
+                      ))),
             ),
             actions: <Widget>[
               // ignore: deprecated_member_use
@@ -310,11 +355,15 @@ class _OperationListState extends State<OperationList> {
                   child: const Text('YES'),
                   onPressed: () {
                     if (type == 'Accept') {
-                      onPressAccept(data);
+                      onPressAccept(data, context);
                     } else if (type == 'Denied') {
-                      onPressDenied(data);
+                      String reason = _reasonController.text.trim();
+                      if (reason.isNotEmpty)
+                        onPressDenied(data, reason);
+                      else
+                        Fluttertoast.showToast(msg: 'Give Reason');
                     } else if (operation == '1') {
-                      onPressArchive(data);
+                      onPressArchive(data, context);
                     }
                   })
             ],
@@ -322,7 +371,7 @@ class _OperationListState extends State<OperationList> {
         });
   }
 
-  onPressArchive(var data) async {
+  onPressArchive(var data, var context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //Return String
     String email = prefs.getString('memail');
@@ -348,6 +397,7 @@ class _OperationListState extends State<OperationList> {
       'vehicleName': data.data()['vehicleName'],
       'vehicleAddress': data.data()['vehicleAddress'],
       'vehicleIssue': data.data()['vehicleIssue'],
+      'devicetoken': data.data()['devicetoken'],
     }).then((value) => {
           remove.doc(data.id).delete().then((value) {
             // setState(() {
@@ -365,7 +415,10 @@ class _OperationListState extends State<OperationList> {
         });
   }
 
-  onPressAccept(var data) async {
+  onPressAccept(var data, var context) async {
+
+    EasyLoading.show(status: 'loading...');
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //Return String
     String email = prefs.getString('memail');
@@ -392,24 +445,32 @@ class _OperationListState extends State<OperationList> {
       'vehicleName': data.data()['vehicleName'],
       'vehicleAddress': data.data()['vehicleAddress'],
       'vehicleIssue': data.data()['vehicleIssue'],
+      'devicetoken': data.data()['devicetoken'],
     }).then((value) => {
+          
+          sendNotification('Accepted', data.data()['devicetoken']),
+          acceptMail(
+              data.data()['customerEmail'], data.data()['shopName'], context),
           remove.doc(data.id).delete().then((value) {
+
+            // EasyLoading.dismiss();
             // setState(() {
             //   getPosts();
             // });
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => MechanicHomeScreen()));
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MechanicHomeScreen()),
-            );
+            // Navigator.pushReplacement(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (BuildContext context) => MechanicHomeScreen()));
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => MechanicHomeScreen()),
+            // );
           })
         });
   }
 
-  onPressDenied(var data) async {
+  onPressDenied(var data, String reason) async {
+    EasyLoading.show(status: 'loading...');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //Return String
     String email = prefs.getString('memail');
@@ -419,18 +480,24 @@ class _OperationListState extends State<OperationList> {
         .doc(email)
         .collection('Request');
 
+    sendNotification('Denied', data.data()['devicetoken']);
+    deniedMail(
+        data.data()['customerEmail'], data.data()['shopName'], reason, context);
+
     remove.doc(data.id).delete().then((value) {
+
+      EasyLoading.dismiss();
       // setState(() {
       //   getPosts();
       // });
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => MechanicHomeScreen()));
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MechanicHomeScreen()),
-      );
+      // Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (BuildContext context) => MechanicHomeScreen()));
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => MechanicHomeScreen()),
+      // );
     });
   }
 }

@@ -1,3 +1,5 @@
+import 'package:bike_car_service/models/Location.dart';
+import 'package:bike_car_service/models/Payment.dart';
 import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import 'categories.dart';
@@ -23,7 +25,14 @@ class Body extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20)),
-              child: SectionTitle(title: "Mechanics", press: () {}),
+              child: SectionTitle(title: "Running Order", press: null,),
+            ),
+            Payment(),
+            
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: getProportionateScreenWidth(20)),
+              child: SectionTitle(title: "Mechanics ( " + object.finalLocation + " )", press: () {}),
             ),
 
             SizedBox(height: getProportionateScreenWidth(10)),

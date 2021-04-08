@@ -1,7 +1,6 @@
 import 'package:bike_car_service/components/verify.dart';
 import 'package:bike_car_service/screens/complete_profile/complete_profile_screen.dart';
 import 'package:bike_car_service/screens/home/home_screen.dart';
-import 'package:bike_car_service/screens/login_success/login_success_screen.dart';
 import 'package:bike_car_service/user_detail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,8 +9,6 @@ import 'package:bike_car_service/components/custom_surfix_icon.dart';
 import 'package:bike_car_service/components/form_error.dart';
 import 'package:bike_car_service/screens/forgot_password/forgot_password_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -29,9 +26,6 @@ class _SignFormState extends State<SignForm> {
   bool remember = false;
   final List<String> errors = [];
   final auth = FirebaseAuth.instance;
-
-  final Geolocator geolocator = Geolocator();
-  Position _currentPosition;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference signIn =
@@ -91,29 +85,12 @@ class _SignFormState extends State<SignForm> {
             press: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                // if all are valid then go to success screen
-                // if (auth.currentUser.emailVerified) {
+
                 auth
                     .signInWithEmailAndPassword(
                         email: email, password: password)
                     .then((_) {
-
-                      verifyUser(email, location, context);
-
-                  //_getCurrentPosition();
-
-                  // if (auth.currentUser.emailVerified) {
-                  //   Navigator.pushAndRemoveUntil(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (BuildContext context) => HomeScreen(),
-                  //     ),
-                  //     (route) => false,
-                  //   );
-                  // }
-
-                  //KeyboardUtil.hideKeyboard(context);
-                  //Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                  verifyUser(email, location, context);
                 },
                         onError: (e) => Fluttertoast.showToast(
                             msg: e.message != null
@@ -125,18 +102,6 @@ class _SignFormState extends State<SignForm> {
                             backgroundColor: Colors.blue,
                             textColor: Colors.white,
                             fontSize: 16.0));
-                //}
-                // else if (!auth.currentUser.emailVerified) {
-                //   Navigator.pushNamed(context, VerifyScreen.routeName);
-                //   Fluttertoast.showToast(
-                //       msg: "Verify Email For Great Experience With Us",
-                //       toastLength: Toast.LENGTH_SHORT,
-                //       gravity: ToastGravity.BOTTOM,
-                //       timeInSecForIosWeb: 1,
-                //       backgroundColor: Colors.blue,
-                //       textColor: Colors.white,
-                //       fontSize: 16.0);
-                // }
               }
             },
           ),
@@ -144,42 +109,6 @@ class _SignFormState extends State<SignForm> {
       ),
     );
   }
-
-  // Future<void> _getCurrentPosition() async {
-  //   // verify permissions
-  //   LocationPermission permission = await Geolocator.requestPermission();
-  //   if (permission == LocationPermission.denied ||
-  //       permission == LocationPermission.deniedForever) {
-  //     await Geolocator.openAppSettings();
-  //     await Geolocator.openLocationSettings();
-  //   }
-  //   // get current position
-  //   _currentPosition = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.high);
-
-  //   // get address
-  //   String _currentAddress = await _getGeolocationAddress(_currentPosition);
-  //   print("Logitute and Latitude -> " + _currentAddress);
-  // }
-
-  // // Method to get Address from position:
-
-  // Future<String> _getGeolocationAddress(Position position) async {
-  //   // geocoding
-  //   var places = await placemarkFromCoordinates(
-  //     position.latitude,
-  //     position.longitude,
-  //   );
-  //   if (places != null && places.isNotEmpty) {
-  //     final Placemark place = places.first;
-  //     print("Place and City -> " + place.thoroughfare + place.locality);
-  //     location = place.locality;
-  //     verifyUser(email, location, context);
-  //     return "${place.thoroughfare}, ${place.locality}";
-  //   }
-
-  //   return "No address available";
-  // }
 
   Future<void> verifyUser(String email, String location, BuildContext context) {
     // Call the user's CollectionReference to add a new user
@@ -212,8 +141,6 @@ class _SignFormState extends State<SignForm> {
                       } else if (!auth.currentUser.emailVerified) {
                         Navigator.pushNamed(context, VerifyScreen.routeName);
                       }
-                      // Navigator.pushNamed(
-                      //     context, LoginSuccessScreen.routeName);
                     } else {
                       Fluttertoast.showToast(
                           msg: "...Complete Your Profile to Continue...",
@@ -228,6 +155,7 @@ class _SignFormState extends State<SignForm> {
                         'location': ' ',
                         'email': email,
                         'password': password,
+                        'devicetoken': ' ',
                         'customer': 'c'
                       });
                     }

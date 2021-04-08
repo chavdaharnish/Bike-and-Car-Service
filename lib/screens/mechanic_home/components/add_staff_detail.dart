@@ -309,26 +309,44 @@ class SpecialOfferCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenHeight(15.0),
-                    vertical: getProportionateScreenWidth(10),
-                  ),
-                  child: Text.rich(
-                    TextSpan(
-                      style: TextStyle(color: Colors.white),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: getProportionateScreenHeight(15.0),
+                      vertical: getProportionateScreenWidth(10),
+                    ),
+                    child: Row(
                       children: [
-                        TextSpan(
-                          text: "$name\n",
-                          style: TextStyle(
-                            fontSize: getProportionateScreenWidth(20),
-                            fontWeight: FontWeight.bold,
+                        Container(
+                          width: getProportionateScreenWidth(290),
+                          child: Text.rich(
+                            TextSpan(
+                              style: TextStyle(color: Colors.white),
+                              children: [
+                                TextSpan(
+                                  text: "$name\n",
+                                  style: TextStyle(
+                                    fontSize: getProportionateScreenWidth(20),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextSpan(text: "$mobile"),
+                              ],
+                            ),
                           ),
                         ),
-                        TextSpan(text: "$mobile")
+                        // DropdownButton(
+                        //   value: _selectedCompany,
+                        //   items: _dropdownMenuItems,
+                        //   onChanged: onChangeDropdownItem,
+                        // ),
+                        //SizedBox(width: getProportionateScreenWidth(0),),
+                        // InkWell(
+                        //   child: Icon(Icons.more_vert, color: Colors.white,),
+                        //   onTap: (){
+
+                        //   },
+                        // ),
                       ],
-                    ),
-                  ),
-                ),
+                    )),
               ],
             ),
           ),

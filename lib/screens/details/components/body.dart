@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'package:bike_car_service/constants.dart';
 import 'package:bike_car_service/models/BookingSchedule.dart';
-import 'package:bike_car_service/screens/details/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:bike_car_service/models/Product.dart';
-import 'package:bike_car_service/size_config.dart';
 // import 'color_dots.dart';
 import 'date_time_picker.dart';
 import 'product_description.dart';

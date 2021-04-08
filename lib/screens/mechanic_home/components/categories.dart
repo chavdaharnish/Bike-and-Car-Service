@@ -111,6 +111,7 @@ class CategoryCard extends StatelessWidget {
       InkWell(
           onTap: press,
           child: Stack(
+          // ignore: deprecated_member_use
           overflow: Overflow.visible, 
           children: [
             Container(

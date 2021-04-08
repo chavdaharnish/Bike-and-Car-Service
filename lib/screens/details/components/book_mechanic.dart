@@ -33,6 +33,7 @@ class _BookMechanicState extends State<BookMechanic> {
 
   String vehicleType;
 
+  // ignore: unused_field
   String _setStartTime, _setEndTime, _setDate;
 
   String _startHour, _startMinute, _startTime;
@@ -145,7 +146,6 @@ class _BookMechanicState extends State<BookMechanic> {
           SnackBar(content: Text("Fill all the field to book mechanic"));
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      
     } else {
       await EasyLoading.show(
         status: 'loading...',
@@ -170,7 +170,7 @@ class _BookMechanicState extends State<BookMechanic> {
         .doc(agrs.email)
         .collection('Request');
 
-    EasyLoading.showProgress(0.3, status: 'Sending Request To Mechanic');
+    EasyLoading.show(status: 'Sending Request To Mechanic');
 
     return signIn.add({
       'date': _dateController.text.trim(),
@@ -184,9 +184,10 @@ class _BookMechanicState extends State<BookMechanic> {
       'vehicleName': modelName,
       'vehicleAddress': address,
       'vehicleIssue': issue,
+      'devicetoken' : finalToken,
     }).then((value) {
       String id = value.id;
-      EasyLoading.showProgress(0.5, status: 'Data Stored Successfully');
+      EasyLoading.show(status: 'Data Stored Successfully');
       mechanic.doc(id).set({
         'date': _dateController.text.trim(),
         'startTime': _startTimeController.text.trim(),
@@ -198,10 +199,10 @@ class _BookMechanicState extends State<BookMechanic> {
         'vehicleType': vehicleType,
         'vehicleName': modelName,
         'vehicleAddress': address,
-        'vehicleIssue': issue
+        'vehicleIssue': issue,
+        'devicetoken' : finalToken,
       }).then((value) {
-        EasyLoading.showProgress(0.8, status: 'Sending Mail To Mechanic');
-
+        EasyLoading.show(status: 'Sending Mail To Mechanic');
         requestMail(agrs.email, agrs.title, context);
       });
     });
@@ -345,6 +346,7 @@ class _BookMechanicState extends State<BookMechanic> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
+                          // ignore: deprecated_member_use
                           FlatButton(
                             onPressed: () {
                               _selectStartTime(context);
@@ -382,6 +384,7 @@ class _BookMechanicState extends State<BookMechanic> {
                           Text(
                             'To',
                           ),
+                          // ignore: deprecated_member_use
                           FlatButton(
                             onPressed: () {
                               _selectEndTime(context);
@@ -521,6 +524,7 @@ class _BookMechanicState extends State<BookMechanic> {
             ))));
   }
 
+  // ignore: unused_element
   _showDialog(String st, String et, String dt) {
     showDialog(
         context: context,

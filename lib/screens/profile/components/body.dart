@@ -1,3 +1,5 @@
+import 'package:bike_car_service/models/Location.dart';
+import 'package:bike_car_service/models/Product.dart';
 import 'package:bike_car_service/screens/profile/components/my_account.dart';
 import 'package:bike_car_service/screens/sign_in/sign_in_screen.dart';
 import 'package:bike_car_service/user_detail.dart';
@@ -17,7 +19,7 @@ class Body extends StatelessWidget {
       FirebaseFirestore.instance.collection('Customer_Sign_In');
   final FirebaseAuth auth = FirebaseAuth.instance;
   String email;
-  String name;
+  String fname,lname;
   String mobile;
   String address;
 
@@ -64,8 +66,15 @@ class Body extends StatelessWidget {
   }
 
   Future<void> signOutGoogle(BuildContext context) async {
+
+    _removeDeviceToken();
+
     await googleSignIn.signOut();
+
+
     addEmail('');
+    demoProducts.clear();
+    object = UserLocation(finalLocation: '');
     Fluttertoast.showToast(
         msg: '...User Signed Out...',
         toastLength: Toast.LENGTH_SHORT,
@@ -84,13 +93,21 @@ class Body extends StatelessWidget {
     //print("User Signed Out");
   }
 
+  _removeDeviceToken()async{
+
+    return await info.doc(auth.currentUser.email).update({
+      'devicetoken': ' ',
+    });
+  }
+
   Future<void> information(BuildContext context) {
     return info
         .where('email', isEqualTo: auth.currentUser.email)
         .get()
         .then((value) => {
               value.docs.forEach((element) {
-                name = element.data()['fname'] + ' ' + element.data()['lname'];
+                fname = element.data()['fname'];
+                lname = element.data()['lname']; 
                 mobile = element.data()['mobile'];
                 address = element.data()['address'];
                 email = auth.currentUser.email;
@@ -98,7 +115,8 @@ class Body extends StatelessWidget {
                   'email': email,
                   'mobile': mobile,
                   'address': address,
-                  'name': name
+                  'fname': fname,
+                  'lname': lname
                 });
               })
             });

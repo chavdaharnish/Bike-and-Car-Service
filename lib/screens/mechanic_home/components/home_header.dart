@@ -1,4 +1,6 @@
+import 'package:bike_car_service/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../size_config.dart';
@@ -50,6 +52,55 @@ class _ShopStatusState extends State<ShopStatus> {
   void initState() {
     super.initState();
     _getStatus();
+    _deviceToken();
+  }
+
+  _deviceToken() {
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+    _firebaseMessaging.configure(
+      // ignore: missing_return
+      onLaunch: (Map<String, dynamic> message) {
+        print('onLaunch called');
+        //return null;
+      },
+      // ignore: missing_return
+      onResume: (Map<String, dynamic> message) {
+        print('onResume called');
+        //return null;
+      },
+      // ignore: missing_return
+      onMessage: (Map<String, dynamic> message) {
+        print('onMessage called');
+        //return null;
+      },
+    );
+    _firebaseMessaging.subscribeToTopic('all');
+    _firebaseMessaging.requestNotificationPermissions(IosNotificationSettings(
+      sound: true,
+      badge: true,
+      alert: true,
+    ));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print('Hello');
+    });
+    _firebaseMessaging.getToken().then((token) {
+      print(token); // Print the Token in Console
+      //finalToken = DeviceToken(finalToken: token);
+      finalToken = token;
+      _updateDeviceToken(token);
+    });
+  }
+
+  _updateDeviceToken(String token) async {
+    CollectionReference signIn =
+        FirebaseFirestore.instance.collection('Mechanic_Sign_In');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return String
+    String email = prefs.getString('memail');
+    if (token.isNotEmpty) {
+      return signIn.doc(email).update({'devicetoken': token});
+    }
   }
 
   @override
@@ -112,7 +163,6 @@ class _ShopStatusState extends State<ShopStatus> {
                             Navigator.pop(context);
                           }
                         });
-                         
                       })
                 ],
               );
@@ -123,39 +173,31 @@ class _ShopStatusState extends State<ShopStatus> {
   }
 
   _getStatus() async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email = prefs.getString('memail');
-    CollectionReference signIn = FirebaseFirestore.instance
-        .collection('Mechanic_Sign_In');
-    
-    return signIn.where('email', isEqualTo: email).get().then((value){
-        value.docs.forEach((element) {
-          setState(() {
-            status = element.data()['status'];
-            if(status == 'Opened'){
-              color = green;
-            }else{
-              color = red;
-            }
-          });
-        });
-    });
+    CollectionReference signIn =
+        FirebaseFirestore.instance.collection('Mechanic_Sign_In');
 
+    return signIn.where('email', isEqualTo: email).get().then((value) {
+      value.docs.forEach((element) {
+        setState(() {
+          status = element.data()['status'];
+          if (status == 'Opened') {
+            color = green;
+          } else {
+            color = red;
+          }
+        });
+      });
+    });
   }
 
   _setStatus(String stat) async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email = prefs.getString('memail');
-    CollectionReference signIn = FirebaseFirestore.instance
-        .collection('Mechanic_Sign_In');
-    
-    return signIn.doc(email).update({'status': stat}).then((value){
-        
-    });
+    CollectionReference signIn =
+        FirebaseFirestore.instance.collection('Mechanic_Sign_In');
 
+    return signIn.doc(email).update({'status': stat}).then((value) {});
   }
-  
-
 }

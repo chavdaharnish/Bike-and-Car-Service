@@ -6,13 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:bike_car_service/components/custom_surfix_icon.dart';
 import 'package:bike_car_service/components/default_button.dart';
 import 'package:bike_car_service/components/form_error.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class CompleteProfileForm extends StatefulWidget {
-  //test commit 
+  //test commit
   @override
   _CompleteProfileFormState createState() => _CompleteProfileFormState();
 }
@@ -83,12 +84,15 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                 lastName = _lnameController.text.trim();
                 address = _addressController.text.trim();
                 mobile = _mobileController.text.trim();
-                if (mechanic == 'm')
+                if (mechanic == 'm') {
                   updateMechanicData(firstName, lastName, email, password,
                       address, mobile, context);
-                else if (customer == 'c')
+                  EasyLoading.show(status: 'loading...');
+                } else if (customer == 'c') {
                   updateCustomerData(firstName, lastName, email, password,
                       address, mobile, location, context);
+                  EasyLoading.show(status: 'loading...');
+                }
 
                 //Navigator.pushNamed(context, OtpScreen.routeName);
               }
@@ -120,7 +124,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       'address': address,
       'profilestatus': true,
       'status': 'Closed',
-
+      'devicetoken': ' ',
     }).then(
       (_) {
         addMechanicEmail(email);
@@ -139,6 +143,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           ),
           (route) => false,
         );
+        EasyLoading.dismiss();
       },
     ).catchError((error) {
       Fluttertoast.showToast(
@@ -149,6 +154,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           backgroundColor: Colors.blue,
           textColor: Colors.white,
           fontSize: 16.0);
+      EasyLoading.dismiss();
     });
   }
 
@@ -172,7 +178,8 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       'mobile': mobile,
       'address': address,
       'location': location,
-      'profilestatus': true
+      'profilestatus': true,
+      'devicetoken': ' ',
     }).then(
       (_) {
         addEmail(email);
@@ -186,6 +193,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             fontSize: 16.0);
         //Navigator.pushNamed(context,HomeScreen.routeName);
         Navigator.pushNamed(context, VerifyScreen.routeName);
+        EasyLoading.dismiss();
       },
     ).catchError((error) {
       Fluttertoast.showToast(
@@ -196,6 +204,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           backgroundColor: Colors.blue,
           textColor: Colors.white,
           fontSize: 16.0);
+      EasyLoading.dismiss();
     });
   }
 

@@ -1,10 +1,8 @@
-import 'package:bike_car_service/components/socal_card.dart';
-import 'package:bike_car_service/screens/mechanic_profile/profile_screen.dart';
+import 'package:bike_car_service/screens/mechanic_home/home_screen.dart';
 import 'package:bike_car_service/screens/sign_in/sign_in_screen.dart';
 import 'package:bike_car_service/user_detail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -524,9 +522,10 @@ class _AboutMechanicsState extends State<AboutMechanics>
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MechanicProfileScreen(),
+                  builder: (context) => MechanicHomeScreen(),
                 ),
-                ModalRoute.withName("/mechanichome")));
+                (route) => false));
+                
   }
 
   Future<void> getDetails() async {
@@ -572,9 +571,9 @@ class _AboutMechanicsState extends State<AboutMechanics>
         .then((_) => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => MechanicProfileScreen(),
+              builder: (context) => MechanicHomeScreen(),
             ),
-            ModalRoute.withName("/mechanichome")));
+            (route) => false));
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:bike_car_service/screens/chat/chat_home_screen.dart';
 import 'package:bike_car_service/screens/details/components/book_mechanic.dart';
 import 'package:bike_car_service/screens/details/components/date_time_picker.dart';
 import 'package:bike_car_service/screens/home/components/list_mechanic.dart';
@@ -51,4 +52,5 @@ final Map<String, WidgetBuilder> routes = {
   DateTimePicker.routeName:(context)=>DateTimePicker(),
   OperationList.routeName:(context)=>OperationList(),
   BookMechanic.routeName:(context)=>BookMechanic(),
+  ChatHomeScreen.routeName:(context)=>ChatHomeScreen(),
 };

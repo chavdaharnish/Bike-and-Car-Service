@@ -16,6 +16,7 @@ class DateTimePicker extends StatefulWidget {
 }
 
 class _DateTimePickerState extends State<DateTimePicker> {
+  // ignore: unused_field
   String _setStartTime, _setEndTime, _setDate;
 
   String _startHour, _startMinute, _startTime;
@@ -155,6 +156,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
             SizedBox(height: getProportionateScreenWidth(20)),
             Row(
               children: <Widget>[
+                // ignore: deprecated_member_use
                 FlatButton(
                   onPressed: () {
                     _selectStartTime(context);
@@ -189,6 +191,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
                   'To',
                 ),
 
+                // ignore: deprecated_member_use
                 FlatButton(
                   onPressed: () {
                     _selectEndTime(context);

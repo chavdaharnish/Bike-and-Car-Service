@@ -15,8 +15,12 @@ class SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(getProportionateScreenWidth(5)),
+      scrollDirection: Axis.horizontal,
+        child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
@@ -25,6 +29,7 @@ class SectionTitle extends StatelessWidget {
             color: Colors.black,
           ),
         ),
+        SizedBox(width: getProportionateScreenWidth(80),),
         GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, ListPage.routeName);
@@ -35,6 +40,6 @@ class SectionTitle extends StatelessWidget {
           ),
         ),
       ],
-    );
+    ));
   }
 }
