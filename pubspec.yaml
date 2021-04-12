@@ -78,6 +78,9 @@ dependencies:
   razorpay_flutter: any
   firebase_messaging: any
   http: any
+  flutter_full_pdf_viewer: any
+  share_extend: any
+  pdf: any
 
 dev_dependencies:
   flutter_test:

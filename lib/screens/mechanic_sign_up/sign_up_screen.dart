@@ -8,7 +8,7 @@ class MechanicSignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up"),
+        title: Text("Mechanic Sign Up"),
       ),
       body: Body(),
     );

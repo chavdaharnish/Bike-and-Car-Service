@@ -1,3 +1,4 @@
+import 'package:bike_car_service/constants.dart';
 import 'package:bike_car_service/screens/mechanic_home/home_screen.dart';
 import 'package:bike_car_service/screens/sign_in/sign_in_screen.dart';
 import 'package:bike_car_service/user_detail.dart';
@@ -5,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../size_config.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
@@ -79,7 +79,13 @@ class AboutMechanics extends StatefulWidget {
 class _AboutMechanicsState extends State<AboutMechanics>
     with TickerProviderStateMixin {
   TextEditingController _textEditingController = TextEditingController();
+  TextEditingController _priceEditingController = TextEditingController();
+  TextEditingController _specialityEditingController = TextEditingController();
   String description;
+  String price;
+  String speciality;
+  bool valueBike = false;
+  bool valueCar = false;
   var _data;
   List<Asset> images = [];
 
@@ -141,37 +147,161 @@ class _AboutMechanicsState extends State<AboutMechanics>
                         showDialog(
                             context: context,
                             builder: (_) {
-                              return new AlertDialog(
-                                //contentPadding: const EdgeInsets.all(0.0),
-                                content: Container(
-                                  padding: EdgeInsets.all(0),
-                                  child: TextField(
-                                    controller: _textEditingController,
-                                    textInputAction: TextInputAction.newline,
-                                    keyboardType: TextInputType.multiline,
-                                    maxLines: null,
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: 'Enter Description'),
+                              return StatefulBuilder(// StatefulBuilder
+                                  builder: (context, setState) {
+                                return new AlertDialog(
+                                  //contentPadding: const EdgeInsets.all(0.0),
+                                  insetPadding: EdgeInsets.all(
+                                      getProportionateScreenWidth(10)),
+                                  content: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          'Write About Your Center',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: kPrimaryColor),
+                                        ),
+                                        SizedBox(
+                                          height:
+                                              getProportionateScreenHeight(20),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            SizedBox(
+                                              width:
+                                                  getProportionateScreenWidth(
+                                                      20),
+                                            ),
+                                            Expanded(
+                                              child: ListTile(
+                                                title: Text('Bike'),
+                                                leading: Checkbox(
+                                                  value: valueBike,
+                                                  activeColor: kPrimaryColor,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      valueBike = value;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: ListTile(
+                                                title: Text('Car'),
+                                                leading: Checkbox(
+                                                  value: valueCar,
+                                                  activeColor: kPrimaryColor,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      valueCar = value;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(0),
+                                          child: TextField(
+                                            controller: _textEditingController,
+                                            textInputAction:
+                                                TextInputAction.newline,
+                                            keyboardType:
+                                                TextInputType.multiline,
+                                            maxLines: null,
+                                            decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                labelText: "Description",
+                                                floatingLabelBehavior:
+                                                    FloatingLabelBehavior
+                                                        .always,
+                                                hintText: 'Enter Description'),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height:
+                                              getProportionateScreenHeight(10),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(0),
+                                          child: TextField(
+                                            controller: _priceEditingController,
+                                            textInputAction:
+                                                TextInputAction.newline,
+                                            keyboardType: TextInputType.number,
+                                            maxLines: 1,
+                                            decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                labelText: "Price",
+                                                floatingLabelBehavior:
+                                                    FloatingLabelBehavior
+                                                        .always,
+                                                hintText:
+                                                    'Enter Charges/Service (INR)'),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height:
+                                              getProportionateScreenHeight(10),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(0),
+                                          child: TextField(
+                                            controller:
+                                                _specialityEditingController,
+                                            textInputAction:
+                                                TextInputAction.newline,
+                                            keyboardType:
+                                                TextInputType.multiline,
+                                            maxLines: null,
+                                            decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                labelText: "Speciality",
+                                                floatingLabelBehavior:
+                                                    FloatingLabelBehavior
+                                                        .always,
+                                                hintText:
+                                                    'Your Speciality in Work\ne.g. \(AC Repairing Specialist\)'),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height:
+                                              getProportionateScreenHeight(10),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                actions: <Widget>[
-                                  // ignore: deprecated_member_use
-                                  new FlatButton(
-                                      child: const Text('CANCEL'),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      }),
-                                  // ignore: deprecated_member_use
-                                  new FlatButton(
-                                      child: const Text('SUBMIT'),
-                                      onPressed: () {
-                                        description =
-                                            _textEditingController.text.trim();
-                                        addDetails(description);
-                                      })
-                                ],
-                              );
+                                  actions: <Widget>[
+                                    // ignore: deprecated_member_use
+                                    new FlatButton(
+                                        child: const Text('CANCEL'),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        }),
+                                    // ignore: deprecated_member_use
+                                    new FlatButton(
+                                        child: const Text('SUBMIT'),
+                                        onPressed: () {
+                                          description = _textEditingController
+                                              .text
+                                              .trim();
+                                          price = _priceEditingController.text
+                                              .trim();
+                                          speciality =
+                                              _specialityEditingController.text
+                                                  .trim();
+                                          addDetails(description, price,
+                                              speciality, valueBike, valueCar);
+                                        })
+                                  ],
+                                );
+                              });
                             });
                       } else if (index == 1) {
                         if (description != null) {
@@ -180,10 +310,12 @@ class _AboutMechanicsState extends State<AboutMechanics>
                               builder: (_) {
                                 return new AlertDialog(
                                   //contentPadding: const EdgeInsets.all(0.0),
+                                  insetPadding: EdgeInsets.all(
+                                      getProportionateScreenWidth(5)),
                                   content: Container(
                                       padding: EdgeInsets.all(0),
                                       child: Text(
-                                          "Sure You want to remove this description?")),
+                                          "Sure You want to remove this all data?")),
                                   actions: <Widget>[
                                     // ignore: deprecated_member_use
                                     new FlatButton(
@@ -240,115 +372,6 @@ class _AboutMechanicsState extends State<AboutMechanics>
         ),
         body: Column(
           children: [
-            // Container(
-            //   padding: EdgeInsets.all(20),
-            //   child: TextField(
-            //     controller: _textEditingController,
-            //     textInputAction: TextInputAction.newline,
-            //     keyboardType: TextInputType.multiline,
-            //     maxLines: null,
-            //     decoration: InputDecoration(
-            //         border: InputBorder.none, hintText: 'Enter Description'),
-            //   ),
-            // ),
-
-            // Container(
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       SocalCard(
-            //           icon: "assets/icons/edit.svg",
-            //           press: () {
-            //             showDialog(
-            //                 context: context,
-            //                 builder: (_) {
-            //                   return new AlertDialog(
-            //                     //contentPadding: const EdgeInsets.all(0.0),
-            //                     content: Container(
-            //                       padding: EdgeInsets.all(0),
-            //                       child: TextField(
-            //                         controller: _textEditingController,
-            //                         textInputAction: TextInputAction.newline,
-            //                         keyboardType: TextInputType.multiline,
-            //                         maxLines: null,
-            //                         decoration: InputDecoration(
-            //                             border: InputBorder.none,
-            //                             hintText: 'Enter Description'),
-            //                       ),
-            //                     ),
-            //                     actions: <Widget>[
-            //                       // ignore: deprecated_member_use
-            //                       new FlatButton(
-            //                           child: const Text('CANCEL'),
-            //                           onPressed: () {
-            //                             Navigator.pop(context);
-            //                           }),
-            //                       // ignore: deprecated_member_use
-            //                       new FlatButton(
-            //                           child: const Text('SUBMIT'),
-            //                           onPressed: () {
-            //                             description =
-            //                                 _textEditingController.text.trim();
-            //                             addDetails(description);
-            //                           })
-            //                     ],
-            //                   );
-            //                 });
-            //           }),
-            //       SocalCard(
-            //         icon: "assets/icons/remove.svg",
-            //         press: () {
-            //           if (description != null) {
-            //             showDialog(
-            //                 context: context,
-            //                 builder: (_) {
-            //                   return new AlertDialog(
-            //                     //contentPadding: const EdgeInsets.all(0.0),
-            //                     content: Container(
-            //                         padding: EdgeInsets.all(0),
-            //                         child: Text(
-            //                             "Sure You want to remove this description?")),
-            //                     actions: <Widget>[
-            //                       // ignore: deprecated_member_use
-            //                       new FlatButton(
-            //                           child: const Text('NO'),
-            //                           onPressed: () {
-            //                             Navigator.pop(context);
-            //                           }),
-            //                       // ignore: deprecated_member_use
-            //                       new FlatButton(
-            //                           child: const Text('YES'),
-            //                           onPressed: () {
-            //                             // description =
-            //                             //     _textEditingController.text.trim();
-            //                             removeDetails();
-            //                           })
-            //                     ],
-            //                   );
-            //                 });
-            //           } else {
-            //             Fluttertoast.showToast(
-            //                 msg: "First Add Something",
-            //                 toastLength: Toast.LENGTH_SHORT,
-            //                 gravity: ToastGravity.BOTTOM,
-            //                 timeInSecForIosWeb: 1,
-            //                 backgroundColor: Colors.blue,
-            //                 textColor: Colors.white,
-            //                 fontSize: 16.0);
-            //           }
-            //           // removeDetails();
-            //         },
-            //       ),
-            //       SocalCard(
-            //         icon: "assets/icons/Camera Icon.svg",
-            //         press: () => {
-            //           pickImages(),
-            //         },
-            //       )
-            //     ],
-            //   ),
-            // ),
-
             FutureBuilder(
                 future: _data,
                 // ignore: missing_return
@@ -358,106 +381,171 @@ class _AboutMechanicsState extends State<AboutMechanics>
                       child: Text("Loading..."),
                     );
                   } else {
-                    return Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.all(getProportionateScreenWidth(20)),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: getProportionateScreenWidth(20),
-                        vertical: getProportionateScreenWidth(15),
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF4A3298),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text.rich(
-                        TextSpan(
-                          style: TextStyle(color: Colors.white),
+                    return Column(children: [
+                      SingleChildScrollView(
+                        child: Column(
                           children: [
-                            //TextSpan(text: description),
-                            TextSpan(
-                              text: description != null
-                                  ? description
-                                  : 'Click Edit Icon To Add About Your Store',
-                              style: TextStyle(
-                                fontSize: getProportionateScreenWidth(18),
-                                fontWeight: FontWeight.bold,
+                            Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.all(
+                                  getProportionateScreenWidth(5)),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: getProportionateScreenWidth(20),
+                                vertical: getProportionateScreenWidth(15),
+                              ),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF4A3298),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text.rich(
+                                TextSpan(
+                                  style: TextStyle(color: Colors.white),
+                                  children: [
+                                    //TextSpan(text: description),
+                                    TextSpan(
+                                      text: valueBike == true &&
+                                              valueCar == true
+                                          ? 'Your Center is for both Bike and Car'
+                                          : valueBike == true &&
+                                                  valueCar == false
+                                              ? 'Your Center is only for Bike'
+                                              : valueCar == true &&
+                                                      valueBike == false
+                                                  ? 'Your Center is only for Car'
+                                                  : valueBike == false &&
+                                                          valueCar == false
+                                                      ? 'Enter Your Center Type(e.g. Bike or Car)'
+                                                      : 'No data found!!!',
+                                      style: TextStyle(
+                                        fontSize:
+                                            getProportionateScreenWidth(18),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.all(
+                                  getProportionateScreenWidth(5)),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: getProportionateScreenWidth(20),
+                                vertical: getProportionateScreenWidth(15),
+                              ),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF4A3298),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text.rich(
+                                TextSpan(
+                                  style: TextStyle(color: Colors.white),
+                                  children: [
+                                    TextSpan(
+                                      text: 'Description : ',
+                                      style: TextStyle(
+                                        fontSize:
+                                            getProportionateScreenWidth(20),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: description != null
+                                          ? description
+                                          : 'Click on Edit Icon To Add About Your Store',
+                                      style: TextStyle(
+                                        fontSize:
+                                            getProportionateScreenWidth(18),
+                                        //fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.all(
+                                  getProportionateScreenWidth(5)),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: getProportionateScreenWidth(20),
+                                vertical: getProportionateScreenWidth(15),
+                              ),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF4A3298),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text.rich(
+                                TextSpan(
+                                  style: TextStyle(color: Colors.white),
+                                  children: [
+                                    TextSpan(
+                                      text: 'Price : ',
+                                      style: TextStyle(
+                                        fontSize:
+                                            getProportionateScreenWidth(20),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: price != null
+                                          ? price
+                                          : 'Click Edit Icon To Add Your Charges',
+                                      style: TextStyle(
+                                        fontSize:
+                                            getProportionateScreenWidth(18),
+                                        //fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.all(
+                                  getProportionateScreenWidth(5)),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: getProportionateScreenWidth(20),
+                                vertical: getProportionateScreenWidth(15),
+                              ),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF4A3298),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text.rich(
+                                TextSpan(
+                                  style: TextStyle(color: Colors.white),
+                                  children: [
+                                    TextSpan(
+                                      text: 'Speciality : ',
+                                      style: TextStyle(
+                                        fontSize:
+                                            getProportionateScreenWidth(20),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: speciality != null
+                                          ? speciality
+                                          : 'Click Edit Icon To Add Your Speciality',
+                                      style: TextStyle(
+                                        fontSize:
+                                            getProportionateScreenWidth(18),
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    );
+                      )
+                    ]);
                   }
                 }),
-
-            // Align(
-            //   alignment: Alignment.bottomLeft,
-            //   child: SocalCard(
-            //       icon: "assets/icons/remove.svg",
-            //       press: () {
-            //         if (description != null) {
-            //           showDialog(
-            //               context: context,
-            //               builder: (_) {
-            //                 return new AlertDialog(
-            //                   //contentPadding: const EdgeInsets.all(0.0),
-            //                   content: Container(
-            //                       padding: EdgeInsets.all(0),
-            //                       child: Text(
-            //                           "Sure You want to remove this description?")),
-            //                   actions: <Widget>[
-            //                     // ignore: deprecated_member_use
-            //                     new FlatButton(
-            //                         child: const Text('NO'),
-            //                         onPressed: () {
-            //                           Navigator.pop(context);
-            //                         }),
-            //                     // ignore: deprecated_member_use
-            //                     new FlatButton(
-            //                         child: const Text('YES'),
-            //                         onPressed: () {
-            //                           // description =
-            //                           //     _textEditingController.text.trim();
-            //                           removeDetails();
-            //                         })
-            //                   ],
-            //                 );
-            //               });
-            //         } else {
-            //           Fluttertoast.showToast(
-            //               msg: "First Add Something",
-            //               toastLength: Toast.LENGTH_SHORT,
-            //               gravity: ToastGravity.BOTTOM,
-            //               timeInSecForIosWeb: 1,
-            //               backgroundColor: Colors.blue,
-            //               textColor: Colors.white,
-            //               fontSize: 16.0);
-            //         }
-            //         // removeDetails();
-            //       },
-            //     ),
-            // ),
-
-            // Align(
-            //   alignment: Alignment.bottomCenter,
-            //   child: SocalCard(
-            //       icon: "assets/icons/Camera Icon.svg",
-            //       press: () => {
-            //         pickImages(),
-            //       },
-            //     )
-            // ),
-
-            // Align(
-            //   alignment: Alignment.bottomRight,
-            //   child: SocalCard(
-            //       icon: "assets/icons/Camera Icon.svg",
-            //       press: () => {
-            //         pickImages(),
-            //       },
-            //     )
-            // ),
-
             Expanded(
               child: GridView.count(
                 padding: EdgeInsets.all(10),
@@ -478,36 +566,8 @@ class _AboutMechanicsState extends State<AboutMechanics>
         ));
   }
 
-  // Future<void> pickImages() async {
-  //   // ignore: unused_local_variable
-  //   List<Asset> resultList = [];
-
-  //   try {
-  //       resultList = await MultiImagePicker.pickImages(
-  //       maxImages: 300,
-  //       enableCamera: true,
-  //       selectedAssets: images,
-  //       materialOptions: MaterialOptions(
-  //       actionBarTitle: "FlutterCorner.com",
-  //       ),
-  //     );
-  //   } on Exception catch (e) {
-  //     print(e);
-  //   }
-  //   return GridView.count(
-  //                       crossAxisCount: 1,
-  //                       children: List.generate(images.length, (index) {
-  //                         Asset asset = images[index];
-  //                         return AssetThumb(
-  //                           asset: asset,
-  //                           width: 300,
-  //                           height: 300,
-  //                         );
-  //                       }),
-  //                     );
-  // }
-
-  addDetails(String description) async {
+  addDetails(String description, String price, String speciality, bool bike,
+      bool car) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email = prefs.getString('memail');
 
@@ -516,21 +576,26 @@ class _AboutMechanicsState extends State<AboutMechanics>
         .doc(email)
         .collection('AboutStore');
 
-    return signIn.doc('about').set({'description': description}).then(
-        (value) => //Navigator.pop(context));
+    return signIn.doc('about').set({
+      'description': description,
+      'price': price,
+      'speciality': speciality,
+      'bike': bike,
+      'car': car,
+    }).then((value) => //Navigator.pop(context));
 
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MechanicHomeScreen(),
-                ),
-                (route) => false));
-                
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MechanicHomeScreen(),
+            ),
+            (route) => false));
   }
 
   Future<void> getDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email = prefs.getString('memail');
+
     CollectionReference signIn = FirebaseFirestore.instance
         .collection('Mechanic_Sign_In')
         .doc(email)
@@ -541,20 +606,19 @@ class _AboutMechanicsState extends State<AboutMechanics>
         if (element.data()['description'] != null) {
           setState(() {
             description = element.data()['description'];
+            price = element.data()['price'];
+            speciality = element.data()['speciality'];
+            valueBike = element.data()['bike'];
+            valueCar = element.data()['car'];
             _textEditingController =
                 new TextEditingController(text: description);
+            _priceEditingController = new TextEditingController(text: price);
+            _specialityEditingController =
+                new TextEditingController(text: speciality);
           });
-          
-        } 
+        }
       });
     });
-
-    // var firestore = FirebaseFirestore.instance;
-    // QuerySnapshot qn = (await firestore
-    //     .collection("Mechanic_Sign_In").doc(email)
-    //     .get()) as QuerySnapshot;
-
-    // return qn;
   }
 
   removeDetails() async {
@@ -588,3 +652,216 @@ class _AboutMechanicsState extends State<AboutMechanics>
     super.initState();
   }
 }
+
+// Future<void> pickImages() async {
+//   // ignore: unused_local_variable
+//   List<Asset> resultList = [];
+
+//   try {
+//       resultList = await MultiImagePicker.pickImages(
+//       maxImages: 300,
+//       enableCamera: true,
+//       selectedAssets: images,
+//       materialOptions: MaterialOptions(
+//       actionBarTitle: "FlutterCorner.com",
+//       ),
+//     );
+//   } on Exception catch (e) {
+//     print(e);
+//   }
+//   return GridView.count(
+//                       crossAxisCount: 1,
+//                       children: List.generate(images.length, (index) {
+//                         Asset asset = images[index];
+//                         return AssetThumb(
+//                           asset: asset,
+//                           width: 300,
+//                           height: 300,
+//                         );
+//                       }),
+//                     );
+// }
+
+// var firestore = FirebaseFirestore.instance;
+// QuerySnapshot qn = (await firestore
+//     .collection("Mechanic_Sign_In").doc(email)
+//     .get()) as QuerySnapshot;
+
+// return qn;
+
+//  // Container(
+//   padding: EdgeInsets.all(20),
+//   child: TextField(
+//     controller: _textEditingController,
+//     textInputAction: TextInputAction.newline,
+//     keyboardType: TextInputType.multiline,
+//     maxLines: null,
+//     decoration: InputDecoration(
+//         border: InputBorder.none, hintText: 'Enter Description'),
+//   ),
+// ),
+
+// Container(
+//   child: Row(
+//     mainAxisAlignment: MainAxisAlignment.center,
+//     children: [
+//       SocalCard(
+//           icon: "assets/icons/edit.svg",
+//           press: () {
+//             showDialog(
+//                 context: context,
+//                 builder: (_) {
+//                   return new AlertDialog(
+//                     //contentPadding: const EdgeInsets.all(0.0),
+//                     content: Container(
+//                       padding: EdgeInsets.all(0),
+//                       child: TextField(
+//                         controller: _textEditingController,
+//                         textInputAction: TextInputAction.newline,
+//                         keyboardType: TextInputType.multiline,
+//                         maxLines: null,
+//                         decoration: InputDecoration(
+//                             border: InputBorder.none,
+//                             hintText: 'Enter Description'),
+//                       ),
+//                     ),
+//                     actions: <Widget>[
+//                       // ignore: deprecated_member_use
+//                       new FlatButton(
+//                           child: const Text('CANCEL'),
+//                           onPressed: () {
+//                             Navigator.pop(context);
+//                           }),
+//                       // ignore: deprecated_member_use
+//                       new FlatButton(
+//                           child: const Text('SUBMIT'),
+//                           onPressed: () {
+//                             description =
+//                                 _textEditingController.text.trim();
+//                             addDetails(description);
+//                           })
+//                     ],
+//                   );
+//                 });
+//           }),
+//       SocalCard(
+//         icon: "assets/icons/remove.svg",
+//         press: () {
+//           if (description != null) {
+//             showDialog(
+//                 context: context,
+//                 builder: (_) {
+//                   return new AlertDialog(
+//                     //contentPadding: const EdgeInsets.all(0.0),
+//                     content: Container(
+//                         padding: EdgeInsets.all(0),
+//                         child: Text(
+//                             "Sure You want to remove this description?")),
+//                     actions: <Widget>[
+//                       // ignore: deprecated_member_use
+//                       new FlatButton(
+//                           child: const Text('NO'),
+//                           onPressed: () {
+//                             Navigator.pop(context);
+//                           }),
+//                       // ignore: deprecated_member_use
+//                       new FlatButton(
+//                           child: const Text('YES'),
+//                           onPressed: () {
+//                             // description =
+//                             //     _textEditingController.text.trim();
+//                             removeDetails();
+//                           })
+//                     ],
+//                   );
+//                 });
+//           } else {
+//             Fluttertoast.showToast(
+//                 msg: "First Add Something",
+//                 toastLength: Toast.LENGTH_SHORT,
+//                 gravity: ToastGravity.BOTTOM,
+//                 timeInSecForIosWeb: 1,
+//                 backgroundColor: Colors.blue,
+//                 textColor: Colors.white,
+//                 fontSize: 16.0);
+//           }
+//           // removeDetails();
+//         },
+//       ),
+//       SocalCard(
+//         icon: "assets/icons/Camera Icon.svg",
+//         press: () => {
+//           pickImages(),
+//         },
+//       )
+//     ],
+//   ),
+// ),
+//
+// // Align(
+//   alignment: Alignment.bottomLeft,
+//   child: SocalCard(
+//       icon: "assets/icons/remove.svg",
+//       press: () {
+//         if (description != null) {
+//           showDialog(
+//               context: context,
+//               builder: (_) {
+//                 return new AlertDialog(
+//                   //contentPadding: const EdgeInsets.all(0.0),
+//                   content: Container(
+//                       padding: EdgeInsets.all(0),
+//                       child: Text(
+//                           "Sure You want to remove this description?")),
+//                   actions: <Widget>[
+//                     // ignore: deprecated_member_use
+//                     new FlatButton(
+//                         child: const Text('NO'),
+//                         onPressed: () {
+//                           Navigator.pop(context);
+//                         }),
+//                     // ignore: deprecated_member_use
+//                     new FlatButton(
+//                         child: const Text('YES'),
+//                         onPressed: () {
+//                           // description =
+//                           //     _textEditingController.text.trim();
+//                           removeDetails();
+//                         })
+//                   ],
+//                 );
+//               });
+//         } else {
+//           Fluttertoast.showToast(
+//               msg: "First Add Something",
+//               toastLength: Toast.LENGTH_SHORT,
+//               gravity: ToastGravity.BOTTOM,
+//               timeInSecForIosWeb: 1,
+//               backgroundColor: Colors.blue,
+//               textColor: Colors.white,
+//               fontSize: 16.0);
+//         }
+//         // removeDetails();
+//       },
+//     ),
+// ),
+
+// Align(
+//   alignment: Alignment.bottomCenter,
+//   child: SocalCard(
+//       icon: "assets/icons/Camera Icon.svg",
+//       press: () => {
+//         pickImages(),
+//       },
+//     )
+// ),
+
+// Align(
+//   alignment: Alignment.bottomRight,
+//   child: SocalCard(
+//       icon: "assets/icons/Camera Icon.svg",
+//       press: () => {
+//         pickImages(),
+//       },
+//     )
+// ),

@@ -1,4 +1,5 @@
 import 'package:bike_car_service/helper/request_mail.dart';
+import 'package:bike_car_service/models/DeviceToken.dart';
 import 'package:bike_car_service/screens/details/components/top_rounded_container.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -185,6 +186,8 @@ class _BookMechanicState extends State<BookMechanic> {
       'vehicleAddress': address,
       'vehicleIssue': issue,
       'devicetoken' : finalToken,
+      'price': ' ',
+      'paymentstatus': false,
     }).then((value) {
       String id = value.id;
       EasyLoading.show(status: 'Data Stored Successfully');
@@ -201,8 +204,11 @@ class _BookMechanicState extends State<BookMechanic> {
         'vehicleAddress': address,
         'vehicleIssue': issue,
         'devicetoken' : finalToken,
+        'price': ' ',
+        'paymentstatus': false,
       }).then((value) {
         EasyLoading.show(status: 'Sending Mail To Mechanic');
+        sendMechanicNotification('Request', finalToken);
         requestMail(agrs.email, agrs.title, context);
       });
     });

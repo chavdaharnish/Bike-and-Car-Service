@@ -95,108 +95,118 @@ class _OperationListState extends State<OperationList> {
                   child: Text("Loading..."),
                 );
               } else {
-                return ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    padding: EdgeInsets.all(10),
-                    clipBehavior: Clip.hardEdge,
-                    separatorBuilder: (context, index) => Divider(
-                          color: Colors.white,
-                          height: 10,
-                          thickness: 0,
-                        ),
-                    shrinkWrap: false,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        child: ListTile(
-                          // leading: Image.asset(
-                          //   "assets/images/app_logo.png",
-                          // ),
-                          trailing: Wrap(
-                            spacing: 12, // space between two icons
-                            children: <Widget>[
-                              InkWell(
-                                child: operation == '2'
-                                    ? Icon(Icons.add_circle_rounded,
-                                        color: Colors.lightGreen)
-                                    : operation == '1'
-                                        ? Icon(null)
-                                        : operation == '0'
-                                            ? Icon(null)
-                                            : operation,
-                                onTap: () {
-                                  if (operation == '2') {
-                                    _showDialog('Accept', snapshot.data[index]);
-                                  }
-                                },
-                              ), // icon-1
-                              InkWell(
-                                child: operation == '2'
-                                    ? Icon(Icons.remove_circle_rounded,
-                                        color: Colors.orange)
-                                    : operation == '1'
-                                        ? Icon(Icons.archive,
-                                            color: Colors.lightGreen)
-                                        : operation == '0'
-                                            ? Icon(null)
-                                            : operation,
-                                onTap: () {
-                                  if (operation == '2') {
-                                    _showDialog('Denied', snapshot.data[index]);
-                                  } else if (operation == '1') {
-                                    _showDialog(
-                                        'RunningOrders', snapshot.data[index]);
-                                  }
-                                },
-                              ), // icon-2
-                            ],
+                if (snapshot.data.length == 0) {
+                  return Container(
+                    child: Align(child: Text('No Data Available...')),
+                  );
+                  //Text('No Running Orders Available');
+                } else {
+                  return ListView.separated(
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.all(10),
+                      clipBehavior: Clip.hardEdge,
+                      separatorBuilder: (context, index) => Divider(
+                            color: Colors.white,
+                            height: 10,
+                            thickness: 0,
                           ),
-                          title: Text.rich(
-                            TextSpan(
-                              style: TextStyle(color: Colors.white),
-                              children: [
-                                TextSpan(
-                                  text: snapshot.data[index]
-                                      .data()['customerEmail'],
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenWidth(15),
-                                    fontWeight: FontWeight.bold,
+                      shrinkWrap: false,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          child: ListTile(
+                            // leading: Image.asset(
+                            //   "assets/images/app_logo.png",
+                            // ),
+                            trailing: Wrap(
+                              spacing: 12, // space between two icons
+                              children: <Widget>[
+                                InkWell(
+                                  child: operation == '2'
+                                      ? Icon(Icons.add_circle_rounded,
+                                          color: Colors.lightGreen)
+                                      : operation == '1'
+                                          ? Icon(null)
+                                          : operation == '0'
+                                              ? Icon(null)
+                                              : operation,
+                                  onTap: () {
+                                    if (operation == '2') {
+                                      _showDialog(
+                                          'Accept', snapshot.data[index]);
+                                    }
+                                  },
+                                ), // icon-1
+                                InkWell(
+                                  child: operation == '2'
+                                      ? Icon(Icons.remove_circle_rounded,
+                                          color: Colors.orange)
+                                      : operation == '1'
+                                          ? Icon(Icons.archive,
+                                              color: Colors.lightGreen)
+                                          : operation == '0'
+                                              ? Icon(null)
+                                              : operation,
+                                  onTap: () {
+                                    if (operation == '2') {
+                                      _showDialog(
+                                          'Denied', snapshot.data[index]);
+                                    } else if (operation == '1') {
+                                      _showDialog('RunningOrders',
+                                          snapshot.data[index]);
+                                    }
+                                  },
+                                ), // icon-2
+                              ],
+                            ),
+                            title: Text.rich(
+                              TextSpan(
+                                style: TextStyle(color: Colors.white),
+                                children: [
+                                  TextSpan(
+                                    text: snapshot.data[index]
+                                        .data()['customerEmail'],
+                                    style: TextStyle(
+                                      fontSize: getProportionateScreenWidth(15),
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          subtitle: Text.rich(
-                            TextSpan(
-                              style: TextStyle(color: Colors.white),
-                              children: [
-                                TextSpan(
-                                    text: 'Date : ' +
-                                        snapshot.data[index].data()['date'] +
-                                        '\n' +
-                                        'Time : ' +
-                                        snapshot.data[index]
-                                            .data()['startTime'] +
-                                        ' - ' +
-                                        snapshot.data[index].data()['endTime']),
-                              ],
+                            subtitle: Text.rich(
+                              TextSpan(
+                                style: TextStyle(color: Colors.white),
+                                children: [
+                                  TextSpan(
+                                      text: 'Date : ' +
+                                          snapshot.data[index].data()['date'] +
+                                          '\n' +
+                                          'Time : ' +
+                                          snapshot.data[index]
+                                              .data()['startTime'] +
+                                          ' - ' +
+                                          snapshot.data[index]
+                                              .data()['endTime']),
+                                ],
+                              ),
                             ),
-                          ),
-                          onTap: () {
-                            // if (operation == '2') {
-                            //   _showBookingData(snapshot.data[index]);
-                            // }else if(operation == '1'){
+                            onTap: () {
+                              // if (operation == '2') {
+                              //   _showBookingData(snapshot.data[index]);
+                              // }else if(operation == '1'){
 
-                            // }
-                            _showBookingData(snapshot.data[index]);
-                          },
-                        ),
-                        decoration: BoxDecoration(
-                          color: Color(0xFF4A3298),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      );
-                    });
+                              // }
+                              _showBookingData(snapshot.data[index]);
+                            },
+                          ),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF4A3298),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        );
+                      });
+                }
               }
             }),
       ),
@@ -306,7 +316,8 @@ class _OperationListState extends State<OperationList> {
                         children: [
                           operation == '2'
                               ? Text('To $type Request Press Yes\n\n' +
-                                  'Requester: '+ data.data()['customerEmail'])
+                                  'Requester: ' +
+                                  data.data()['customerEmail'])
                               : operation == '1'
                                   ? Text(
                                       'Press Yes if order is completed\n\nMake sure that customer paid all the bills.')
@@ -339,7 +350,12 @@ class _OperationListState extends State<OperationList> {
                               : type == 'Accept'
                                   ? Text(
                                       'Mechanic must have to go at client Address')
-                                  : type,
+                                  : type == 'RunningOrders'
+                                      ? Text(
+                                          'Thank you for Service...',
+                                          style: TextStyle(fontSize: 25),
+                                        )
+                                      : type,
                         ],
                       ))),
             ),
@@ -364,6 +380,15 @@ class _OperationListState extends State<OperationList> {
                         Fluttertoast.showToast(msg: 'Give Reason');
                     } else if (operation == '1') {
                       onPressArchive(data, context);
+                      // if (data.data()['paymentstatus']) {
+                      //   onPressArchive(data, context);
+                      // } else {
+                      //   Navigator.pop(context);
+                      //   final snackBar = SnackBar(
+                      //       content: Text("Customer Has Not Done Payment"));
+
+                      //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      // }
                     }
                   })
             ],
@@ -372,9 +397,11 @@ class _OperationListState extends State<OperationList> {
   }
 
   onPressArchive(var data, var context) async {
+    EasyLoading.show(status: 'loading...');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //Return String
     String email = prefs.getString('memail');
+    var customerEmail = data.data()['customerEmail'];
     CollectionReference remove = FirebaseFirestore.instance
         .collection('Mechanic_Sign_In')
         .doc(email)
@@ -383,6 +410,16 @@ class _OperationListState extends State<OperationList> {
     CollectionReference signIn = FirebaseFirestore.instance
         .collection('Mechanic_Sign_In')
         .doc(email)
+        .collection('CompletedOrders');
+
+    CollectionReference customerRemove = FirebaseFirestore.instance
+        .collection('Customer_Sign_In')
+        .doc(customerEmail)
+        .collection('RunningOrders');
+
+    CollectionReference customerCompleted = FirebaseFirestore.instance
+        .collection('Customer_Sign_In')
+        .doc(customerEmail)
         .collection('CompletedOrders');
 
     signIn.doc(data.id).set({
@@ -398,11 +435,28 @@ class _OperationListState extends State<OperationList> {
       'vehicleAddress': data.data()['vehicleAddress'],
       'vehicleIssue': data.data()['vehicleIssue'],
       'devicetoken': data.data()['devicetoken'],
+      'price': data.data()['price'],
+      'paymentstatus': data.data()['paymentstatus'],
     }).then((value) => {
           remove.doc(data.id).delete().then((value) {
-            // setState(() {
-            //   _data = getPosts();
-            // });
+            customerCompleted.doc(data.id).set({
+              'date': data.data()['date'],
+              'startTime': data.data()['startTime'],
+              'endTime': data.data()['endTime'],
+              'shopName': data.data()['shopName'],
+              'mechanicEmail': email,
+              'mechanicMobile': data.data()['mechanicMobile'],
+              'customerEmail': data.data()['customerEmail'],
+              'vehicleType': data.data()['vehicleType'],
+              'vehicleName': data.data()['vehicleName'],
+              'vehicleAddress': data.data()['vehicleAddress'],
+              'vehicleIssue': data.data()['vehicleIssue'],
+              'devicetoken': data.data()['devicetoken'],
+              'price': data.data()['price'],
+              'paymentstatus': data.data()['paymentstatus'],
+            });
+            customerRemove.doc(data.id).delete();
+            EasyLoading.dismiss();
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -416,22 +470,32 @@ class _OperationListState extends State<OperationList> {
   }
 
   onPressAccept(var data, var context) async {
-
     EasyLoading.show(status: 'loading...');
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //Return String
     String email = prefs.getString('memail');
+    var customerEmail = data.data()['customerEmail'];
 
     CollectionReference signIn = FirebaseFirestore.instance
         .collection('Mechanic_Sign_In')
         .doc(email)
         .collection('RunningOrders');
 
+    CollectionReference customerSignIn = FirebaseFirestore.instance
+        .collection('Customer_Sign_In')
+        .doc(customerEmail)
+        .collection('RunningOrders');
+
     CollectionReference remove = FirebaseFirestore.instance
         .collection('Mechanic_Sign_In')
         .doc(email)
         .collection('Request');
+
+    CollectionReference customerRemove = FirebaseFirestore.instance
+        .collection('Customer_Sign_In')
+        .doc(customerEmail)
+        .collection('BookingDetails');
 
     signIn.doc(data.id).set({
       'date': data.data()['date'],
@@ -446,25 +510,30 @@ class _OperationListState extends State<OperationList> {
       'vehicleAddress': data.data()['vehicleAddress'],
       'vehicleIssue': data.data()['vehicleIssue'],
       'devicetoken': data.data()['devicetoken'],
+      'price': data.data()['price'],
+      'paymentstatus': data.data()['paymentstatus'],
     }).then((value) => {
-          
+          customerSignIn.doc(data.id).set({
+            'date': data.data()['date'],
+            'startTime': data.data()['startTime'],
+            'endTime': data.data()['endTime'],
+            'shopName': data.data()['shopName'],
+            'mechanicEmail': email,
+            'mechanicMobile': data.data()['mechanicMobile'],
+            'customerEmail': data.data()['customerEmail'],
+            'vehicleType': data.data()['vehicleType'],
+            'vehicleName': data.data()['vehicleName'],
+            'vehicleAddress': data.data()['vehicleAddress'],
+            'vehicleIssue': data.data()['vehicleIssue'],
+            'devicetoken': data.data()['devicetoken'],
+            'price': data.data()['price'],
+            'paymentstatus': data.data()['paymentstatus'],
+          }),
           sendNotification('Accepted', data.data()['devicetoken']),
           acceptMail(
               data.data()['customerEmail'], data.data()['shopName'], context),
           remove.doc(data.id).delete().then((value) {
-
-            // EasyLoading.dismiss();
-            // setState(() {
-            //   getPosts();
-            // });
-            // Navigator.pushReplacement(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (BuildContext context) => MechanicHomeScreen()));
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => MechanicHomeScreen()),
-            // );
+            customerRemove.doc(data.id).delete();
           })
         });
   }
@@ -474,30 +543,37 @@ class _OperationListState extends State<OperationList> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //Return String
     String email = prefs.getString('memail');
+    var customerEmail = data.data()['customerEmail'];
 
     CollectionReference remove = FirebaseFirestore.instance
         .collection('Mechanic_Sign_In')
         .doc(email)
         .collection('Request');
 
+    CollectionReference customerRemove = FirebaseFirestore.instance
+        .collection('Customer_Sign_In')
+        .doc(customerEmail)
+        .collection('BookingDetails');
+
     sendNotification('Denied', data.data()['devicetoken']);
     deniedMail(
         data.data()['customerEmail'], data.data()['shopName'], reason, context);
 
     remove.doc(data.id).delete().then((value) {
-
+      customerRemove.doc(data.id).delete();
       EasyLoading.dismiss();
-      // setState(() {
-      //   getPosts();
-      // });
-      // Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (BuildContext context) => MechanicHomeScreen()));
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => MechanicHomeScreen()),
-      // );
     });
   }
 }
+
+// setState(() {
+//   getPosts();
+// });
+// Navigator.pushReplacement(
+//     context,
+//     MaterialPageRoute(
+//         builder: (BuildContext context) => MechanicHomeScreen()));
+// Navigator.push(
+//   context,
+//   MaterialPageRoute(builder: (context) => MechanicHomeScreen()),
+// );

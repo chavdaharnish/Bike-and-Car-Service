@@ -6,12 +6,16 @@ class Product {
   final int id;
   final String title, description;
   final List<String> images;
-  final double rating, price;
+  final double rating;
   final bool isFavourite, isPopular;
+  final String price;
   final String status;
   final String email;
   final String mobile;
   final String location;
+  final String speciality;
+  final bool bike;
+  final bool car;
 
   Product({
     @required this.id,
@@ -25,6 +29,9 @@ class Product {
     this.price,
     this.status,
     this.location,
+    this.speciality,
+    this.bike,
+    this.car,
     @required this.description,
   });
 }
@@ -39,11 +46,18 @@ Future<List<Product>> addMechanics() async {
 
   demoProducts.clear();
 
-  
-  await signIn.where('location', isEqualTo: object.finalLocation.toLowerCase()).get().then((value) async {
+  await signIn
+      .where('location', isEqualTo: object.finalLocation.toLowerCase())
+      .get()
+      .then((value) async {
     if (value.size > 0) {
       for (var shop_element in value.docs) {
         String description = " No Details Available";
+        String price = 'Not Updated by Mechanic';
+        String speciality = 'Not Updated by Mechanic';
+        var bike = false;
+        var car = false;
+
         count++;
 
         String email = shop_element.id;
@@ -51,7 +65,26 @@ Future<List<Product>> addMechanics() async {
         await signIn.doc(email).collection('AboutStore').get().then((value) {
           for (var element in value.docs) {
             description = element.data()['description'];
-            print('object' + element.data()['description']);
+            if (element.data()['bike'] != null) {
+              price = element.data()['price'];
+            } else {
+              price = 'Not Updated by Mechanic';
+            }
+            if (element.data()['bike'] != null) {
+              speciality = element.data()['speciality'];
+            } else {
+              speciality = 'Not Updated by Mechanic';
+            }
+            if (element.data()['bike'] != null) {
+              bike = element.data()['bike'];
+            } else {
+              bike = false;
+            }
+            if (element.data()['car'] != null) {
+              car = element.data()['car'];
+            } else {
+              car = false;
+            }
           }
         });
         demoProducts.add(Product(
@@ -59,7 +92,7 @@ Future<List<Product>> addMechanics() async {
           images: [
             "assets/images/app_logo.png",
           ],
-          location: shop_element.data()['location'] ,
+          location: shop_element.data()['location'],
           title: shop_element.data()['shopname'],
           description: description,
           email: shop_element.id,
@@ -67,7 +100,10 @@ Future<List<Product>> addMechanics() async {
           isFavourite: true,
           isPopular: true,
           status: shop_element.data()['status'],
-          price: 0,
+          price: price,
+          speciality: speciality,
+          bike: bike,
+          car: car,
         ));
       }
     }

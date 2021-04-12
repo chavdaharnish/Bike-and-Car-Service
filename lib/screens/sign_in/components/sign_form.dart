@@ -151,13 +151,14 @@ class _SignFormState extends State<SignForm> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                       Navigator.pushNamed(
-                          context, CompleteProfileScreen.routeName, arguments: {
-                        'location': ' ',
-                        'email': email,
-                        'password': password,
-                        'devicetoken': ' ',
-                        'customer': 'c'
-                      });
+                          context, CompleteProfileScreen.routeName,
+                          arguments: {
+                            'location': ' ',
+                            'email': email,
+                            'password': password,
+                            'devicetoken': ' ',
+                            'customer': 'c'
+                          });
                     }
                   }),
                 }

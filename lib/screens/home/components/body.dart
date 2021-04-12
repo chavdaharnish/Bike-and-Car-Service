@@ -1,5 +1,5 @@
 import 'package:bike_car_service/models/Location.dart';
-import 'package:bike_car_service/models/Payment.dart';
+import 'package:bike_car_service/screens/home/components/running_orders.dart';
 import 'package:flutter/material.dart';
 import '../../../size_config.dart';
 import 'categories.dart';
@@ -25,10 +25,23 @@ class Body extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20)),
-              child: SectionTitle(title: "Running Order", press: null,),
+              child: SectionTitle(title: "Running Order         ", press: null,),
             ),
-            Payment(),
-            
+            //Payment(),
+            Row(
+                children: [
+                  Expanded(
+                       child: Container(
+                      height: getProportionateScreenHeight(140),
+                      padding: EdgeInsets.all(12.0),
+                      child: CustomerRunningOrder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: getProportionateScreenHeight(10),
+                  ),
+                ],
+              ),
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: getProportionateScreenWidth(20)),

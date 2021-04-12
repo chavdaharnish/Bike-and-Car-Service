@@ -14,10 +14,7 @@ class _ListPageState extends State<ListPage> {
 
   Future getPosts() async {
     var firestore = FirebaseFirestore.instance;
-    QuerySnapshot qn = await firestore
-        .collection("Mechanic_Sign_In")
-        // .where('address', isEqualTo: 'Upleta')
-        .get();
+    QuerySnapshot qn = await firestore.collection("Mechanic_Sign_In").get();
 
     return qn.docs;
   }
@@ -69,46 +66,53 @@ class _ListPageState extends State<ListPage> {
                     itemBuilder: (context, index) {
                       return Container(
                         child: ListTile(
-                          leading: Image.asset(
-                            "assets/images/app_logo.png",
-                          ),
-                          trailing: InkWell(
-                            onTap: () => {},
-                            child: Icon(
-                              Icons.more_vert,
-                              color: Colors.white,
+                            leading: Image.asset(
+                              "assets/images/app_logo.png",
                             ),
-                          ),
-                          title: Text.rich(
-                            TextSpan(
-                              style: TextStyle(color: Colors.white),
-                              children: [
-                                TextSpan(
-                                  text: snapshot.data[index].data()['shopname'],
-                                  style: TextStyle(
-                                    fontSize: getProportionateScreenWidth(21),
-                                    fontWeight: FontWeight.bold,
+                            trailing: InkWell(
+                              onTap: () => {},
+                              child: Icon(
+                                Icons.more_vert,
+                                color: Colors.white,
+                              ),
+                            ),
+                            title: Text.rich(
+                              TextSpan(
+                                style: TextStyle(color: Colors.white),
+                                children: [
+                                  TextSpan(
+                                    text:
+                                        snapshot.data[index].data()['shopname'],
+                                    style: TextStyle(
+                                      fontSize: getProportionateScreenWidth(21),
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          subtitle: Text.rich(
-                            TextSpan(
-                              style: TextStyle(color: Colors.white),
-                              children: [
-                                TextSpan(
-                                    text: snapshot.data[index]
-                                            .data()['mobile'] +
-                                        '\n' +
-                                        snapshot.data[index].data()['email'] +
-                                        '\n' +
-                                        snapshot.data[index].data()['address']),
-                              ],
+                            subtitle: Text.rich(
+                              TextSpan(
+                                style: TextStyle(color: Colors.white),
+                                children: [
+                                  TextSpan(
+                                      text: snapshot.data[index]
+                                          .data()['mobile']),
+                                  TextSpan(
+                                    text: '\n' +
+                                        snapshot.data[index].data()['email'],
+                                  ),
+                                  TextSpan(
+                                    text: '\n' +
+                                        snapshot.data[index].data()['location'] != null ? '\n' +
+                                        snapshot.data[index].data()['location'] : 'not found!!!',
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                          onTap: () => navigateToDetail(snapshot.data[index]),
-                        ),
+                            onTap: () => {
+                                  navigateToDetail(snapshot.data[index]),
+                                }),
 
                         decoration: BoxDecoration(
                           color: Color(0xFF4A3298),

@@ -80,6 +80,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             text: "continue",
             press: () {
               if (_formKey.currentState.validate()) {
+                 _formKey.currentState.save();
                 firstName = _fnameController.text.trim();
                 lastName = _lnameController.text.trim();
                 address = _addressController.text.trim();
@@ -121,7 +122,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       'fname': firstName,
       'lname': lastName,
       'mobile': mobile,
-      'address': address,
+      'location': address,
       'profilestatus': true,
       'status': 'Closed',
       'devicetoken': ' ',
@@ -226,8 +227,8 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Address",
-        hintText: "Enter your phone address",
+        labelText: customer == 'c' ? "Address" : mechanic == 'm' ? 'City' : 'Address',
+        hintText: customer == 'c' ? "Enter your address" : mechanic == 'm' ? 'Enter City \(ex. Ahmedabad\)' : 'Enter your address',
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,

@@ -28,7 +28,6 @@ class Body extends StatelessWidget {
               children: [
                 ProductDescription(
                   product: product,
-                  pressOnSeeMore: () {},
                 ),
 
                 SizedBox(height: 200,)

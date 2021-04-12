@@ -22,7 +22,10 @@ class Categories extends StatelessWidget {
             icon: categories[index]["icon"],
             text: categories[index]["text"],
             press: () {
-
+              if (index == 1) {
+                // Navigator.push(context,
+                //     MaterialPageRoute(builder: (context) => PdfBill()));
+              }
             },
           ),
         ),
